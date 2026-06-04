@@ -829,7 +829,6 @@
         <div id="booking-step-2" class="booking-step" style="display:none;">
           <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Step 2: Choose Your Slot — <span id="level-display">Beginners</span></div>
           <div id="calendly-widget" class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:600px;"></div>
-          <button onclick="showPayment()" class="btn-primary" style="display:block;width:100%;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:1rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Continue to Payment →</button>
         </div>
 
         <!-- Payment confirmation -->
@@ -1188,8 +1187,34 @@ function showCalendly() {
   if (window.Calendly) {
     setTimeout(() => {
       window.Calendly.initInlineWidgets();
+      detectBookingConfirmation();
     }, 100);
   }
+}
+
+function detectBookingConfirmation() {
+  const widget = document.getElementById("calendly-widget");
+  let checkCount = 0;
+  const maxChecks = 120; // 2 minutes max
+  
+  const checkForConfirmation = setInterval(() => {
+    checkCount++;
+    const text = widget.innerText || widget.textContent || "";
+    
+    // Check if Calendly shows "scheduled" or "confirmed"
+    if (text.toLowerCase().includes("scheduled") && text.toLowerCase().includes("calendar")) {
+      clearInterval(checkForConfirmation);
+      // Wait 1 second then auto-go to payment
+      setTimeout(() => {
+        showPayment();
+      }, 1000);
+    }
+    
+    // Stop checking after max attempts
+    if (checkCount >= maxChecks) {
+      clearInterval(checkForConfirmation);
+    }
+  }, 500);
 }
 
 function backToCalendly() {

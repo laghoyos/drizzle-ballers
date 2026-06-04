@@ -490,8 +490,7 @@
   }
   .book-tab:hover { border-color: var(--green); color: var(--white); }
   .book-tab.active { background: var(--green); color: var(--navy); border-color: var(--green); }
-  .book-tab.bundle-tab { border-color: rgba(245,158,11,0.3); color: #f59e0b; }
-  .book-tab.bundle-tab.active { background: #f59e0b; color: var(--navy); border-color: #f59e0b; }
+
 
   .tab-panel { margin-top: 1.5rem; }
   .tab-info {
@@ -515,33 +514,7 @@
   }
   .tab-info p { color: var(--silver); font-size: 0.9rem; line-height: 1.5; }
 
-  /* bundle unlock */
-  .bundle-unlock-box {
-    display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap;
-    background: var(--card-bg);
-    border: 1px solid rgba(245,158,11,0.2);
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    max-width: 500px;
-  }
-  .bundle-unlock-box input {
-    flex: 1; min-width: 200px;
-    background: var(--dark);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px;
-    padding: 0.8rem 1rem;
-    color: var(--white);
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-    letter-spacing: 2px;
-  }
-  .bundle-unlock-box input:focus { border-color: #f59e0b; }
-  #bundle-msg { width: 100%; font-size: 0.85rem; font-weight: 700; margin-top: 0.3rem; }
-  #bundle-msg.error { color: #f87171; }
-  #bundle-msg.success { color: var(--green); }
+
 
   /* ── FREE SESSION ── */
   #free-session {
@@ -713,47 +686,32 @@
 
       <div class="program-card featured">
         <div class="program-tag">⭐ Most Popular</div>
-        <div class="program-icon">🎯</div>
-        <div class="program-name">Private 1-on-1</div>
-        <p class="program-desc">Fully personalized sessions focused on your kid's specific weaknesses and strengths. Maximum improvement, fastest results.</p>
-        <ul class="program-features">
-          <li>60-minute focused sessions</li>
-          <li>Custom skill development plan</li>
-          <li>Flexible scheduling</li>
-          <li>Progress tracking each session</li>
-          <li>Any skill level welcome</li>
-        </ul>
-        <a href="#book" class="btn-primary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;">Book Now</a>
-      </div>
-
-      <div class="program-card">
-        <div class="program-tag gray">Group Fun</div>
         <div class="program-icon">👥</div>
         <div class="program-name">Group Classes</div>
-        <p class="program-desc">Small-group sessions (max 8 kids) that build teamwork, game IQ, and individual skills in a fun, social environment.</p>
+        <p class="program-desc">Small-group sessions (max 16 players) that build teamwork, game IQ, and individual skills in a high-energy, social environment. Beginners and experienced groups available.</p>
         <ul class="program-features">
-          <li>Max 8 players per group</li>
-          <li>Age-appropriate curriculum</li>
-          <li>Weekly sessions</li>
+          <li>Max 16 players per group</li>
+          <li>Beginners (Mon / Wed / Fri) & Experienced (Tue / Thu)</li>
+          <li>90-minute sessions</li>
           <li>Team drills & mini-games</li>
-          <li>Great for beginners</li>
+          <li>All skill levels welcome</li>
         </ul>
-        <a href="#schedule" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;">See Schedule</a>
+        <a href="#book" class="btn-primary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;">Book a Class</a>
       </div>
 
       <div class="program-card">
-        <div class="program-tag gray">Skill Boost</div>
-        <div class="program-icon">⚡</div>
-        <div class="program-name">Skill Clinics</div>
-        <p class="program-desc">Themed intensive sessions targeting one skill — dribbling, finishing, defending, first touch. Deep-dive in one area.</p>
+        <div class="program-tag gray">1-on-1 & Clinics</div>
+        <div class="program-icon">🎯</div>
+        <div class="program-name">Private & Skill Sessions</div>
+        <p class="program-desc">Personalized 1-on-1 training for rapid individual improvement, plus themed skill clinics that go deep on one area — dribbling, finishing, first touch, and more.</p>
         <ul class="program-features">
-          <li>90-minute deep-dive sessions</li>
-          <li>Themed (dribbling, shooting…)</li>
-          <li>Open to any program member</li>
-          <li>Seasonal availability</li>
-          <li>Great add-on to regular training</li>
+          <li>60-min private sessions (Mon / Wed / Fri · 7–8 PM)</li>
+          <li>Custom skill development plan</li>
+          <li>Themed clinics: dribbling, shooting, defending</li>
+          <li>Open to any skill level</li>
+          <li>Great complement to group classes</li>
         </ul>
-        <a href="#contact" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;">Inquire</a>
+        <a href="#book" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;">Book Now</a>
       </div>
 
     </div>
@@ -847,7 +805,7 @@
   <div class="container">
     <div class="section-label">Packages</div>
     <h2 class="section-title">PRICING</h2>
-    <p class="section-sub">Simple, transparent pricing. No hidden fees. Pay per session or save with a bundle.</p>
+    <p class="section-sub">Simple, transparent pricing. No hidden fees. Pay per session or book a private slot.</p>
     <div class="pricing-grid">
 
       <div class="pricing-card">
@@ -863,20 +821,6 @@
         <a href="#book" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;width:100%;text-align:center;">Sign Up</a>
       </div>
 
-      <div class="pricing-card popular">
-        <div class="popular-badge">⚽ Best Value</div>
-        <div class="pricing-name">Monthly Bundle</div>
-        <div class="pricing-price"><span>$</span>180</div>
-        <div class="pricing-period">per month (8 group classes)</div>
-        <ul class="pricing-list">
-          <li>8 group classes / month</li>
-          <li>Priority booking</li>
-          <li>Save $20 vs. drop-in</li>
-          <li>Lock your time slot</li>
-        </ul>
-        <a href="#book" class="btn-primary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;width:100%;text-align:center;">Get Started</a>
-      </div>
-
       <div class="pricing-card">
         <div class="pricing-name">Private 1-on-1</div>
         <div class="pricing-price"><span>$</span>75</div>
@@ -885,7 +829,6 @@
           <li>Fully personalized</li>
           <li>Flexible scheduling</li>
           <li>Book via Calendly</li>
-          <li>Bundle of 5 = $325</li>
         </ul>
         <a href="#book" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;width:100%;text-align:center;">Book Session</a>
       </div>

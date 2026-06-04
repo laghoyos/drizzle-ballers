@@ -767,9 +767,9 @@
             <span class="kc-count" id="kc-count">1</span>
             <button class="kc-btn" onclick="changeKids(1)">+</button>
           </div>
-          <div class="kc-total">Total: <strong id="kc-total">$35</strong></div>
+          <div class="kc-total">Total: <strong id="kc-total">$35</strong><span id="kc-savings" style="color:var(--green);font-size:0.8rem;font-weight:800;margin-left:0.4rem;"></span></div>
         </div>
-        <a id="group-book-btn" href="https://buy.stripe.com/5kQfZgbnT2OQfwQ6I98N200?quantity=1" target="_blank" class="btn-primary" style="display:block;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:0.8rem;">Pay & Book →</a>
+        <a id="group-book-btn" href="https://calendly.com/drizzleballers/beginners?redirect_url=https%3A%2F%2Fdrizzleballers.github.io%2Fconfirm.html%3Fkids%3D1" target="_blank" class="btn-primary" style="display:block;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:0.8rem;">Pick a Date & Time →</a>
       </div>
 
       <div class="program-card">
@@ -1055,22 +1055,29 @@
 
 <script>
 // ── KID COUNTER ──
-const STRIPE_BASE = 'https://buy.stripe.com/5kQfZgbnT2OQfwQ6I98N200';
-const PRICE_PER_KID = 35;
-const MAX_KIDS = 6;
+const STRIPE_LINKS = {
+  1: 'https://buy.stripe.com/14AdR8ajPfBCfwQd6x8N201',
+  2: 'https://buy.stripe.com/9B6cN4ajPcpq3O81nP8N202',
+  3: 'https://buy.stripe.com/fZubJ0dw1fBC0BW1nP8N203',
+  4: 'https://buy.stripe.com/dRm14meA5dtu5Wg2rT8N204',
+  5: 'https://buy.stripe.com/00w14m9fLahi4Sc3vX8N205'
+};
+const PRICES = { 1: 35, 2: 65, 3: 90, 4: 110, 5: 120 };
 let kidCount = 1;
 
 function changeKids(delta) {
-  kidCount = Math.min(MAX_KIDS, Math.max(1, kidCount + delta));
+  kidCount = Math.min(5, Math.max(1, kidCount + delta));
   document.getElementById('kc-count').textContent = kidCount;
-  document.getElementById('kc-total').textContent = `$${kidCount * PRICE_PER_KID}`;
-  document.getElementById('group-book-btn').href = `${STRIPE_BASE}?quantity=${kidCount}`;
-  // disable − at 1, + at max
+  document.getElementById('kc-total').textContent = `$${PRICES[kidCount]}`;
+  const savings = kidCount > 1 ? ` · save $${(kidCount * 35) - PRICES[kidCount]}` : '';
+  document.getElementById('kc-savings').textContent = savings;
+  document.getElementById('group-book-btn').href =
+    `https://calendly.com/drizzleballers/beginners?redirect_url=${encodeURIComponent('https://drizzleballers.github.io/confirm.html?kids=' + kidCount)}`;
   document.querySelectorAll('.kc-btn')[0].disabled = kidCount === 1;
-  document.querySelectorAll('.kc-btn')[1].disabled = kidCount === MAX_KIDS;
+  document.querySelectorAll('.kc-btn')[1].disabled = kidCount === 5;
 }
 
-// init disabled state
+// init
 document.querySelectorAll('.kc-btn')[0].disabled = true;
 
 

@@ -647,7 +647,7 @@
     <li><a href="#programs">Programs</a></li>
     <li><a href="#schedule">Schedule</a></li>
     <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#free-session" class="nav-cta">🎁 Free Session</a></li>
+    <li><a href="#free-session" class="nav-cta">🎁 Free Class</a></li>
     <li><a href="#book" class="nav-cta" style="background:transparent;border:1px solid var(--green);color:var(--green)!important;">Book Now</a></li>
   </ul>
 </nav>
@@ -906,7 +906,6 @@
       <button class="book-tab active" onclick="switchTab('private', this)">🎯 Private 1-on-1</button>
       <button class="book-tab" onclick="switchTab('beginners', this)">⭐ Beginners Group</button>
       <button class="book-tab" onclick="switchTab('experienced', this)">🔥 Experienced Group</button>
-      <button class="book-tab bundle-tab" onclick="switchTab('bundle', this)">🔒 Bundle Members</button>
     </div>
 
     <!-- Private -->
@@ -936,22 +935,6 @@
       <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/experienced" style="min-width:320px;height:680px;"></div>
     </div>
 
-    <!-- Bundle unlock -->
-    <div id="tab-bundle" class="tab-panel" style="display:none;">
-      <div class="tab-info">
-        <span class="tab-badge">🔒 Bundle Members Only · Enter your password to book</span>
-        <p>Already purchased the monthly bundle? Enter the password you received to access your booking link.</p>
-      </div>
-      <div class="bundle-unlock-box">
-        <input type="password" id="bundle-pw" placeholder="Enter bundle password" onkeydown="if(event.key==='Enter')unlockBundle()"/>
-        <button class="btn-primary" onclick="unlockBundle()" style="border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Unlock →</button>
-        <div id="bundle-msg"></div>
-      </div>
-      <div id="bundle-calendly" style="display:none;">
-        <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:680px;"></div>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -971,20 +954,20 @@
             <span>Seattle, WA — Parks TBD per class</span>
           </div>
         </div>
-        <a href="https://wa.me/1YOURNUMBER" target="_blank" style="text-decoration:none;" class="contact-item">
+        <a href="sms:+12067309007" style="text-decoration:none;" class="contact-item">
           <div class="contact-icon">💬</div>
           <div class="contact-text">
-            <strong>WhatsApp</strong>
-            <span>Tap to message us directly →</span>
+            <strong>Text Us</strong>
+            <span>(206) 730-9007 — tap to text</span>
           </div>
         </a>
-        <div class="contact-item">
+        <a href="mailto:drizzleballers@gmail.com" style="text-decoration:none;" class="contact-item">
           <div class="contact-icon">📧</div>
           <div class="contact-text">
             <strong>Email</strong>
-            <span>hello@drizzleballers.com</span>
+            <span>drizzleballers@gmail.com</span>
           </div>
-        </div>
+        </a>
         <div class="contact-item">
           <div class="contact-icon">🕒</div>
           <div class="contact-text">
@@ -1040,8 +1023,8 @@
 <section id="free-session">
   <div class="free-session-inner">
     <div class="free-badge">🎁 LIMITED OFFER</div>
-    <h2 class="section-title" style="color:var(--white);">FIRST SESSION<br><span style="color:var(--green);">ON US</span></h2>
-    <p class="section-sub">New to Drizzle Ballers? Bring your kid out for a free intro session — no strings attached. One per family, phone number required to reserve your spot.</p>
+    <h2 class="section-title" style="color:var(--white);">FIRST GROUP CLASS<br><span style="color:var(--green);">FREE</span></h2>
+    <p class="section-sub">New to Drizzle Ballers? Bring your kid out for a free group class — no strings attached. One per family, phone number required to reserve your spot.</p>
     <form class="free-form" onsubmit="claimFreeSession(event)">
       <div class="form-group">
         <label>Parent / Guardian Name</label>
@@ -1061,14 +1044,14 @@
         </select>
       </div>
       <div class="form-group">
-        <label>WhatsApp / Phone Number</label>
-        <input type="tel" id="fs-phone" placeholder="+1 (206) 555-0100" required/>
+        <label>Phone Number (for confirmation text)</label>
+        <input type="tel" id="fs-phone" placeholder="(206) 555-0100" required/>
       </div>
       <div id="free-msg"></div>
       <button type="submit" class="btn-primary" style="border:none;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;font-size:1rem;padding:1rem;">
-        Claim My Free Session ⚽
+        Claim My Free Class ⚽
       </button>
-      <p class="fine-print">One free session per phone number. We'll reach out via WhatsApp to confirm your slot.</p>
+      <p class="fine-print">One free class per phone number. We'll text you to confirm your spot.</p>
     </form>
   </div>
 </section>
@@ -1094,11 +1077,8 @@ const LINKS = {
   private:    'https://calendly.com/drizzleballers/private',
   beginners:  'https://calendly.com/drizzleballers/beginners',
   experienced:'https://calendly.com/drizzleballers/experienced',
-  freePass:   'https://calendly.com/drizzleballers/free-pass',
-  bundle:     'https://calendly.com/drizzleballers/beginners'
+  freePass:   'https://calendly.com/drizzleballers/free-pass'
 };
-
-const BUNDLE_PASSWORD = 'drizzle2025'; // change this to match your Calendly password
 
 // ── TAB SWITCHING ──
 function switchTab(tab, btn) {
@@ -1107,20 +1087,6 @@ function switchTab(tab, btn) {
   document.getElementById('tab-' + tab).style.display = 'block';
   btn.classList.add('active');
   window.Calendly && Calendly.initInlineWidgets();
-}
-
-// ── BUNDLE UNLOCK ──
-function unlockBundle() {
-  const pw  = document.getElementById('bundle-pw').value;
-  const msg = document.getElementById('bundle-msg');
-  if (pw === BUNDLE_PASSWORD) {
-    document.getElementById('bundle-calendly').style.display = 'block';
-    document.querySelector('.bundle-unlock-box').style.display = 'none';
-    window.Calendly && Calendly.initInlineWidgets();
-  } else {
-    msg.className = 'error';
-    msg.textContent = '⚠️ Wrong password. Check your confirmation message from Drizzle Ballers.';
-  }
 }
 
 // ── FREE SESSION CLAIM ──
@@ -1147,7 +1113,7 @@ function claimFreeSession(e) {
 
   if (duplicate) {
     msg.className = 'error';
-    msg.textContent = `⚠️ This number already claimed a free session on ${duplicate.date}. One per family!`;
+    msg.textContent = `⚠️ This number already claimed a free class on ${duplicate.date}. One per family!`;
     return;
   }
 
@@ -1165,12 +1131,12 @@ function claimFreeSession(e) {
 
   // show success + Calendly link
   msg.className = 'success';
-  msg.innerHTML = `✅ You're on the list, <strong>${name}</strong>! Click below to book your free class slot:
-    <a href="${LINKS.freePass}" target="_blank" 
+  msg.innerHTML = `✅ You're on the list, <strong>${name}</strong>! We'll text you at ${document.getElementById('fs-phone').value.trim()} to confirm your spot. You can also book directly below:
+    <a href="${LINKS.freePass}" target="_blank"
        style="display:block;margin-top:1rem;background:var(--green);color:var(--navy);
               font-weight:900;padding:0.85rem 1.5rem;border-radius:6px;text-decoration:none;
               text-align:center;font-size:1rem;letter-spacing:1px;">
-      📅 Book My Free Session →
+      📅 Book My Free Class →
     </a>`;
   const submitBtn = e.target.querySelector('button[type="submit"]');
   submitBtn.disabled = true;

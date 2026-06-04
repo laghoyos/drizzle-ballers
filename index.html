@@ -813,21 +813,19 @@
           <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06);">
             <div style="font-size:0.82rem;font-weight:800;color:var(--silver);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:1rem;">Choose Level</div>
             <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
-              <button onclick="setLevel('beginners')" id="btn-beginners" class="level-btn active">
+              <button onclick="setLevelAndShowCalendly('beginners')" id="btn-beginners" class="level-btn active">
                 ⭐ Beginners<br><span style="font-size:0.7rem;color:var(--gray);">Mon/Wed/Fri 5:30–6:45 PM</span>
               </button>
-              <button onclick="setLevel('experienced')" id="btn-experienced" class="level-btn">
+              <button onclick="setLevelAndShowCalendly('experienced')" id="btn-experienced" class="level-btn">
                 🔥 Experienced<br><span style="font-size:0.7rem;color:var(--gray);">Tue/Thu</span>
               </button>
             </div>
           </div>
-
-          <button onclick="showCalendly()" class="btn-primary" style="display:block;width:100%;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:1.2rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Pick a Date & Time →</button>
         </div>
 
-        <!-- Calendly widget -->
+        <!-- Calendly widget + Payment -->
         <div id="booking-step-2" class="booking-step" style="display:none;">
-          <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Step 2: Choose Your Slot — <span id="level-display">Beginners</span></div>
+          <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Select Your Time — <span id="level-display">Beginners</span></div>
           
           <!-- Beginners widget -->
           <div id="calendly-beginners" style="display:none;">
@@ -839,28 +837,15 @@
             <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/experienced" style="min-width:320px;height:600px;"></div>
           </div>
           
-          <button onclick="showPayment()" class="btn-primary" style="display:block;width:100%;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:1rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Continue to Payment →</button>
-        </div>
-
-        <!-- Payment confirmation -->
-        <div id="booking-step-3" class="booking-step" style="display:none;">
-          <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Step 3: Complete Payment</div>
-          <div class="summary-box">
-            <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">
-              <span style="color:var(--gray);font-size:0.85rem;font-weight:700;">Level</span>
-              <span id="pay-level" style="color:var(--white);font-weight:800;">Beginners</span>
+          <!-- Payment button (appears after booking) -->
+          <div id="payment-button-container" style="display:none;margin-top:1rem;">
+            <div style="background:rgba(105,190,40,0.1);border:1px solid var(--green);border-radius:10px;padding:1rem;margin-bottom:1rem;">
+              <div style="color:var(--green);font-weight:800;margin-bottom:0.5rem;">✓ Booking Confirmed!</div>
+              <div style="color:var(--gray);font-size:0.85rem;">Kids: <strong id="confirm-kids">1</strong> · Total: <strong id="confirm-total">$35</strong></div>
             </div>
-            <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">
-              <span style="color:var(--gray);font-size:0.85rem;font-weight:700;">Kids</span>
-              <span id="pay-kids" style="color:var(--white);font-weight:800;">1 kid</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;padding:0.5rem 0;">
-              <span style="color:var(--gray);font-size:0.85rem;font-weight:700;">Total</span>
-              <span id="pay-total" style="color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:1.6rem;font-weight:900;line-height:1;">$35</span>
-            </div>
+            <a id="stripe-payment-btn" href="#" target="_blank" class="btn-primary" style="display:block;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">💳 Complete Payment →</a>
+            <button onclick="backToLevel()" class="btn-secondary" style="display:block;width:100%;font-size:0.85rem;padding:0.65rem 1.5rem;text-align:center;margin-top:0.6rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">← Change Level</button>
           </div>
-          <a id="stripe-btn" href="#" target="_blank" class="btn-primary" style="display:block;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:0.8rem;">💳 Complete Payment →</a>
-          <button onclick="backToCalendly()" class="btn-secondary" style="display:block;width:100%;font-size:0.85rem;padding:0.65rem 1.5rem;text-align:center;margin-top:0.6rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">← Back</button>
         </div>
       </div>
 
@@ -1184,25 +1169,28 @@ function setLevel(level) {
   localStorage.setItem('drizzle_level', level);
   document.getElementById('btn-beginners').classList.toggle('active', level === 'beginners');
   document.getElementById('btn-experienced').classList.toggle('active', level === 'experienced');
-  // Update label immediately when level changes
-  const levelLabel = level === 'beginners' ? 'Beginners' : 'Experienced';
-  if (document.getElementById('level-display')) {
-    document.getElementById('level-display').textContent = levelLabel;
-  }
 }
 
-function showCalendly() {
+function setLevelAndShowCalendly(level) {
+  levelSelected = level;
+  localStorage.setItem('drizzle_level', level);
+  document.getElementById('btn-beginners').classList.toggle('active', level === 'beginners');
+  document.getElementById('btn-experienced').classList.toggle('active', level === 'experienced');
+  
+  // Hide payment button until booking confirmed
+  document.getElementById('payment-button-container').style.display = 'none';
+  
+  // Show Calendly step
   document.getElementById("booking-step-1").style.display = "none";
   document.getElementById("booking-step-2").style.display = "block";
-  document.getElementById("booking-step-3").style.display = "none";
   
   // Update level label
-  const levelLabel = levelSelected === "beginners" ? "Beginners" : "Experienced";
-  document.getElementById("level-display").textContent = levelLabel;
+  const levelLabel = level === 'beginners' ? 'Beginners' : 'Experienced';
+  document.getElementById('level-display').textContent = levelLabel;
   
   // Show/hide correct widget
-  document.getElementById("calendly-beginners").style.display = levelSelected === "beginners" ? "block" : "none";
-  document.getElementById("calendly-experienced").style.display = levelSelected === "experienced" ? "block" : "none";
+  document.getElementById('calendly-beginners').style.display = level === 'beginners' ? 'block' : 'none';
+  document.getElementById('calendly-experienced').style.display = level === 'experienced' ? 'block' : 'none';
   
   // Initialize Calendly widgets
   if (window.Calendly) {
@@ -1214,49 +1202,28 @@ function showCalendly() {
 }
 
 function detectBookingConfirmation() {
-  let checkCount = 0;
-  const maxChecks = 120; // up to 1 minute
-  
-  const checkForConfirmation = setInterval(() => {
-    checkCount++;
-    
-    // Get the visible widget
-    const beginnerWidget = document.getElementById("calendly-beginners");
-    const experiencedWidget = document.getElementById("calendly-experienced");
-    const visibleWidget = beginnerWidget.style.display === "block" ? beginnerWidget : experiencedWidget;
-    
-    const text = (visibleWidget.innerText || visibleWidget.textContent || "").toLowerCase();
-    
-    // Check if Calendly shows confirmation (looks for "scheduled!")
-    if (text.includes("scheduled")) {
-      clearInterval(checkForConfirmation);
-      // Auto-go to payment after 1.5 seconds
-      setTimeout(() => {
-        showPayment();
-      }, 1500);
+  // Listen for Calendly's postMessage when event is scheduled
+  window.addEventListener('message', function onCalendlyEvent(e) {
+    if (e.data.event === 'calendly.event_scheduled') {
+      // Booking confirmed! Show payment button
+      showPaymentButton();
+      // Remove listener to avoid duplicate triggers
+      window.removeEventListener('message', onCalendlyEvent);
     }
-    
-    // Stop checking after max attempts
-    if (checkCount >= maxChecks) {
-      clearInterval(checkForConfirmation);
-    }
-  }, 500);
+  });
 }
 
-function backToCalendly() {
-  document.getElementById('booking-step-2').style.display = 'block';
-  document.getElementById('booking-step-3').style.display = 'none';
+function showPaymentButton() {
+  document.getElementById('confirm-kids').textContent = kidCount === 1 ? '1' : kidCount;
+  document.getElementById('confirm-total').textContent = '$' + PRICES[kidCount];
+  document.getElementById('stripe-payment-btn').href = STRIPE_LINKS[kidCount];
+  document.getElementById('payment-button-container').style.display = 'block';
 }
 
-function showPayment() {
-  document.getElementById('booking-step-2').style.display = 'none';
-  document.getElementById('booking-step-3').style.display = 'block';
-  
-  const levelLabel = levelSelected === 'beginners' ? 'Beginners' : 'Experienced';
-  document.getElementById('pay-level').textContent = levelLabel;
-  document.getElementById('pay-kids').textContent = kidCount === 1 ? '1 kid' : `${kidCount} kids`;
-  document.getElementById('pay-total').textContent = `$${PRICES[kidCount]}`;
-  document.getElementById('stripe-btn').href = STRIPE_LINKS[kidCount];
+function backToLevel() {
+  document.getElementById("booking-step-1").style.display = "block";
+  document.getElementById("booking-step-2").style.display = "none";
+  document.getElementById('payment-button-container').style.display = 'none';
 }
 
 

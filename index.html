@@ -829,6 +829,7 @@
         <div id="booking-step-2" class="booking-step" style="display:none;">
           <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Step 2: Choose Your Slot — <span id="level-display">Beginners</span></div>
           <div id="calendly-widget" class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:600px;"></div>
+          <button onclick="showPayment()" class="btn-primary" style="display:block;width:100%;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:1rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Continue to Payment →</button>
         </div>
 
         <!-- Payment confirmation -->
@@ -1176,31 +1177,17 @@ function setLevel(level) {
 }
 
 function showCalendly() {
-  document.getElementById('booking-step-1').style.display = 'none';
-  document.getElementById('booking-step-2').style.display = 'block';
-  document.getElementById('booking-step-3').style.display = 'none';
-  
-  // Update level display
-  const levelLabel = levelSelected === 'beginners' ? 'Beginners' : 'Experienced';
-  document.getElementById('level-display').textContent = levelLabel;
-  
-  // Recreate the Calendly widget with correct URL
+  document.getElementById("booking-step-1").style.display = "none";
+  document.getElementById("booking-step-2").style.display = "block";
+  document.getElementById("booking-step-3").style.display = "none";
+  const levelLabel = levelSelected === "beginners" ? "Beginners" : "Experienced";
+  document.getElementById("level-display").textContent = levelLabel;
   const calendlyUrl = CALENDLY_LINKS[levelSelected];
-  const widget = document.getElementById('calendly-widget');
-  widget.setAttribute('data-url', calendlyUrl);
-  
-  // Force Calendly to reload the widget
+  const widget = document.getElementById("calendly-widget");
+  widget.setAttribute("data-url", calendlyUrl);
   if (window.Calendly) {
-    // Clear the widget content
-    widget.innerHTML = '';
-    // Reset the data-url
-    widget.setAttribute('data-url', calendlyUrl);
-    // Reinitialize
     setTimeout(() => {
-      if (window.Calendly) {
-        window.Calendly.initInlineWidgets();
-        detectCalendlyBooking();
-      }
+      window.Calendly.initInlineWidgets();
     }, 100);
   }
 }
@@ -1221,14 +1208,6 @@ function showPayment() {
   document.getElementById('stripe-btn').href = STRIPE_LINKS[kidCount];
 }
 
-function detectCalendlyBooking() {
-  // Set up event listener when Calendly is ready
-  if (window.Calendly) {
-    window.Calendly.addEventListener('event_scheduled', function onEventScheduled(e) {
-      showPayment();
-    });
-  }
-}
 
 // init
 updateKidDisplay();

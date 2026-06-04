@@ -1133,24 +1133,25 @@
 <script>
 // ── BOOKING FLOW ──
 const STRIPE_LINKS = {
-  1: 'https://buy.stripe.com/14AdR8ajPfBCfwQd6x8N201',
-  2: 'https://buy.stripe.com/9B6cN4ajPcpq3O81nP8N202',
-  3: 'https://buy.stripe.com/fZubJ0dw1fBC0BW1nP8N203',
-  4: 'https://buy.stripe.com/dRm14meA5dtu5Wg2rT8N204',
-  5: 'https://buy.stripe.com/00w14m9fLahi4Sc3vX8N205'
+  1: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200',
+  2: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200',
+  3: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200',
+  4: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200',
+  5: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200',
+  6: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200'
 };
 const CALENDLY_LINKS = {
   beginners: 'https://calendly.com/drizzleballers/beginners',
   experienced: 'https://calendly.com/drizzleballers/experienced'
 };
-const PRICES  = { 1: 35, 2: 65, 3: 90, 4: 110, 5: 120 };
-const SAVINGS = { 1: 0,  2: 5,  3: 15, 4: 30,  5: 55  };
+const PRICES  = { 1: 35, 2: 65, 3: 90, 4: 110, 5: 120, 6: 130 };
+const SAVINGS = { 1: 0,  2: 5,  3: 15, 4: 30,  5: 55,  6: 70  };
 
 let kidCount = parseInt(localStorage.getItem('drizzle_kids')) || 1;
 let levelSelected = localStorage.getItem('drizzle_level') || 'beginners';
 
 function changeKids(delta) {
-  kidCount = Math.min(5, Math.max(1, kidCount + delta));
+  kidCount = Math.min(6, Math.max(1, kidCount + delta));
   localStorage.setItem('drizzle_kids', kidCount);
   updateKidDisplay();
 }
@@ -1161,7 +1162,7 @@ function updateKidDisplay() {
   const savings = SAVINGS[kidCount] > 0 ? ` · save $${SAVINGS[kidCount]}` : '';
   document.getElementById('kc-savings').textContent = savings;
   document.querySelectorAll('.kc-btn')[0].disabled = kidCount === 1;
-  document.querySelectorAll('.kc-btn')[1].disabled = kidCount === 5;
+  document.querySelectorAll('.kc-btn')[1].disabled = kidCount === 6;
 }
 
 function setLevel(level) {

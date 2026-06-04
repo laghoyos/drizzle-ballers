@@ -828,7 +828,18 @@
         <!-- Calendly widget -->
         <div id="booking-step-2" class="booking-step" style="display:none;">
           <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Step 2: Choose Your Slot — <span id="level-display">Beginners</span></div>
-          <div id="calendly-widget" class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:600px;"></div>
+          
+          <!-- Beginners widget -->
+          <div id="calendly-beginners" style="display:none;">
+            <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:600px;"></div>
+          </div>
+          
+          <!-- Experienced widget -->
+          <div id="calendly-experienced" style="display:none;">
+            <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/experienced" style="min-width:320px;height:600px;"></div>
+          </div>
+          
+          <button onclick="showPayment()" class="btn-primary" style="display:block;width:100%;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:1rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Continue to Payment →</button>
         </div>
 
         <!-- Payment confirmation -->
@@ -1173,17 +1184,27 @@ function setLevel(level) {
   localStorage.setItem('drizzle_level', level);
   document.getElementById('btn-beginners').classList.toggle('active', level === 'beginners');
   document.getElementById('btn-experienced').classList.toggle('active', level === 'experienced');
+  // Update label immediately when level changes
+  const levelLabel = level === 'beginners' ? 'Beginners' : 'Experienced';
+  if (document.getElementById('level-display')) {
+    document.getElementById('level-display').textContent = levelLabel;
+  }
 }
 
 function showCalendly() {
   document.getElementById("booking-step-1").style.display = "none";
   document.getElementById("booking-step-2").style.display = "block";
   document.getElementById("booking-step-3").style.display = "none";
+  
+  // Update level label
   const levelLabel = levelSelected === "beginners" ? "Beginners" : "Experienced";
   document.getElementById("level-display").textContent = levelLabel;
-  const calendlyUrl = CALENDLY_LINKS[levelSelected];
-  const widget = document.getElementById("calendly-widget");
-  widget.setAttribute("data-url", calendlyUrl);
+  
+  // Show/hide correct widget
+  document.getElementById("calendly-beginners").style.display = levelSelected === "beginners" ? "block" : "none";
+  document.getElementById("calendly-experienced").style.display = levelSelected === "experienced" ? "block" : "none";
+  
+  // Initialize Calendly widgets
   if (window.Calendly) {
     setTimeout(() => {
       window.Calendly.initInlineWidgets();
@@ -1193,21 +1214,26 @@ function showCalendly() {
 }
 
 function detectBookingConfirmation() {
-  const widget = document.getElementById("calendly-widget");
   let checkCount = 0;
-  const maxChecks = 120; // 2 minutes max
+  const maxChecks = 120; // up to 1 minute
   
   const checkForConfirmation = setInterval(() => {
     checkCount++;
-    const text = widget.innerText || widget.textContent || "";
     
-    // Check if Calendly shows "scheduled" or "confirmed"
-    if (text.toLowerCase().includes("scheduled") && text.toLowerCase().includes("calendar")) {
+    // Get the visible widget
+    const beginnerWidget = document.getElementById("calendly-beginners");
+    const experiencedWidget = document.getElementById("calendly-experienced");
+    const visibleWidget = beginnerWidget.style.display === "block" ? beginnerWidget : experiencedWidget;
+    
+    const text = (visibleWidget.innerText || visibleWidget.textContent || "").toLowerCase();
+    
+    // Check if Calendly shows confirmation (looks for "scheduled!")
+    if (text.includes("scheduled")) {
       clearInterval(checkForConfirmation);
-      // Wait 1 second then auto-go to payment
+      // Auto-go to payment after 1.5 seconds
       setTimeout(() => {
         showPayment();
-      }, 1000);
+      }, 1500);
     }
     
     // Stop checking after max attempts

@@ -1216,7 +1216,26 @@ function showPaymentButton() {
   // Show payment button with summary
   document.getElementById('confirm-kids').textContent = kidCount === 1 ? '1' : kidCount;
   document.getElementById('confirm-total').textContent = '$' + PRICES[kidCount];
-  document.getElementById('stripe-payment-btn').href = STRIPE_LINKS[kidCount];
+  
+  // Create payment link that also tracks the booking
+  const stripeLink = STRIPE_LINKS[kidCount];
+  const trackingLink = stripeLink + (stripeLink.includes('?') ? '&' : '?') + 'session_id=' + Date.now();
+  document.getElementById('stripe-payment-btn').href = trackingLink;
+  
+  // Store pending booking
+  const pendingBooking = {
+    level: levelSelected,
+    kids: kidCount,
+    total: PRICES[kidCount],
+    timestamp: new Date().toISOString(),
+    status: 'pending_payment'
+  };
+  
+  // Save to localStorage
+  let bookings = JSON.parse(localStorage.getItem('drizzle_bookings') || '[]');
+  bookings.push(pendingBooking);
+  localStorage.setItem('drizzle_bookings', JSON.stringify(bookings));
+  
   document.getElementById('payment-button-container').style.display = 'block';
 }
 

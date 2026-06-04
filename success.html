@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Confirmed · Drizzle Ballers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #002244;
+      --green: #69BE28;
+      --gray: #8B8B8B;
+      --white: #FFFFFF;
+      --dark: #0a0f1a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Nunito', sans-serif; 
+      background: linear-gradient(135deg, var(--navy) 0%, #001a33 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      padding: 1rem;
+    }
+    .container {
+      text-align: center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--green);
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      max-width: 500px;
+      backdrop-filter: blur(10px);
+    }
+    .checkmark {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      animation: popIn 0.5s ease-out;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+      color: var(--green);
+    }
+    .subtitle {
+      color: var(--gray);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+    .booking-details {
+      background: rgba(105,190,40,0.08);
+      border: 1px solid rgba(105,190,40,0.2);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .detail-row:last-child { border: none; }
+    .detail-label { color: var(--gray); font-size: 0.9rem; }
+    .detail-value { font-weight: 800; color: var(--white); }
+    .btn {
+      display: inline-block;
+      background: var(--green);
+      color: var(--navy);
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      font-weight: 800;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(105,190,40,0.3); }
+    .info-text {
+      color: var(--gray);
+      font-size: 0.85rem;
+      margin-top: 1.5rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="checkmark">✓</div>
+    <h1>Payment Confirmed!</h1>
+    <p class="subtitle">Your booking is secured</p>
+
+    <div class="booking-details">
+      <div class="detail-row">
+        <span class="detail-label">Level</span>
+        <span class="detail-value" id="detail-level">Beginners</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Kids</span>
+        <span class="detail-value" id="detail-kids">1</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Amount Paid</span>
+        <span class="detail-value" id="detail-amount">$35</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Confirmation</span>
+        <span class="detail-value" id="detail-time">Just now</span>
+      </div>
+    </div>
+
+    <a href="/" class="btn">← Back to Home</a>
+
+    <p class="info-text">
+      A confirmation email has been sent. You're all set! We'll see you on the field. ⚽
+    </p>
+  </div>
+
+  <script>
+    // Mark booking as paid when this success page loads
+    function markBookingAsPaid() {
+      const bookings = JSON.parse(localStorage.getItem('drizzle_bookings') || '[]');
+      
+      if (bookings.length === 0) {
+        console.log('No pending bookings found');
+        return;
+      }
+      
+      // Get the last pending booking and mark it as paid
+      const lastBooking = bookings[bookings.length - 1];
+      if (lastBooking && lastBooking.status === 'pending_payment') {
+        lastBooking.status = 'paid';
+        lastBooking.paid_timestamp = new Date().toISOString();
+        
+        // Save updated bookings
+        localStorage.setItem('drizzle_bookings', JSON.stringify(bookings));
+        
+        // Display booking details
+        document.getElementById('detail-level').textContent = 
+          lastBooking.level === 'beginners' ? 'Beginners' : 'Experienced';
+        document.getElementById('detail-kids').textContent = 
+          lastBooking.kids === 1 ? '1 kid' : `${lastBooking.kids} kids`;
+        document.getElementById('detail-amount').textContent = '$' + lastBooking.total;
+        document.getElementById('detail-time').textContent = 
+          new Date(lastBooking.paid_timestamp).toLocaleString();
+        
+        console.log('✓ Booking marked as paid:', lastBooking);
+      }
+    }
+    
+    // Run on page load
+    window.addEventListener('load', markBookingAsPaid);
+    markBookingAsPaid();
+  </script>
+</body>
+</html>

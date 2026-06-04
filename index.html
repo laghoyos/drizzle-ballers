@@ -1209,6 +1209,11 @@ function detectBookingConfirmation() {
 }
 
 function showPaymentButton() {
+  // Hide Calendly widgets
+  document.getElementById('calendly-beginners').style.display = 'none';
+  document.getElementById('calendly-experienced').style.display = 'none';
+  
+  // Show payment button with summary
   document.getElementById('confirm-kids').textContent = kidCount === 1 ? '1' : kidCount;
   document.getElementById('confirm-total').textContent = '$' + PRICES[kidCount];
   document.getElementById('stripe-payment-btn').href = STRIPE_LINKS[kidCount];

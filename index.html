@@ -516,6 +516,65 @@
 
 
 
+  /* ── KID COUNTER ── */
+  .kid-counter {
+    background: rgba(105,190,40,0.06);
+    border: 1px solid rgba(105,190,40,0.2);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .kid-counter-label {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--silver);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .kid-counter-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .kc-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--green);
+    background: transparent;
+    color: var(--green);
+    font-size: 1.2rem;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, color 0.2s;
+    line-height: 1;
+    font-family: 'Nunito', sans-serif;
+  }
+  .kc-btn:hover { background: var(--green); color: var(--navy); }
+  .kc-btn:disabled { border-color: var(--gray); color: var(--gray); cursor: not-allowed; }
+  .kc-btn:disabled:hover { background: transparent; color: var(--gray); }
+  .kc-count {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--white);
+    min-width: 28px;
+    text-align: center;
+    line-height: 1;
+  }
+  .kc-total {
+    font-size: 0.9rem;
+    color: var(--silver);
+  }
+  .kc-total strong {
+    color: var(--green);
+    font-size: 1.1rem;
+  }
+
   /* ── FREE SESSION ── */
   #free-session {
     background: linear-gradient(135deg, rgba(105,190,40,0.12) 0%, var(--navy) 60%);
@@ -699,7 +758,18 @@
           <li>Team drills & mini-games</li>
           <li>All skill levels welcome</li>
         </ul>
-        <a href="#book" class="btn-primary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;">Book a Class</a>
+
+        <!-- Kid counter widget -->
+        <div class="kid-counter">
+          <div class="kid-counter-label">How many kids?</div>
+          <div class="kid-counter-controls">
+            <button class="kc-btn" onclick="changeKids(-1)">−</button>
+            <span class="kc-count" id="kc-count">1</span>
+            <button class="kc-btn" onclick="changeKids(1)">+</button>
+          </div>
+          <div class="kc-total">Total: <strong id="kc-total">$35</strong></div>
+        </div>
+        <a id="group-book-btn" href="https://buy.stripe.com/5kQfZgbnT2OQfwQ6I98N200?quantity=1" target="_blank" class="btn-primary" style="display:block;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:0.8rem;">Pay & Book →</a>
       </div>
 
       <div class="program-card">
@@ -984,7 +1054,26 @@
 </footer>
 
 <script>
-// ── PROGRAM CARD HOVER HIGHLIGHT ──
+// ── KID COUNTER ──
+const STRIPE_BASE = 'https://buy.stripe.com/5kQfZgbnT2OQfwQ6I98N200';
+const PRICE_PER_KID = 35;
+const MAX_KIDS = 6;
+let kidCount = 1;
+
+function changeKids(delta) {
+  kidCount = Math.min(MAX_KIDS, Math.max(1, kidCount + delta));
+  document.getElementById('kc-count').textContent = kidCount;
+  document.getElementById('kc-total').textContent = `$${kidCount * PRICE_PER_KID}`;
+  document.getElementById('group-book-btn').href = `${STRIPE_BASE}?quantity=${kidCount}`;
+  // disable − at 1, + at max
+  document.querySelectorAll('.kc-btn')[0].disabled = kidCount === 1;
+  document.querySelectorAll('.kc-btn')[1].disabled = kidCount === MAX_KIDS;
+}
+
+// init disabled state
+document.querySelectorAll('.kc-btn')[0].disabled = true;
+
+
 document.querySelectorAll('.program-card').forEach(card => {
   card.style.cursor = 'pointer';
   const btn = card.querySelector('a');

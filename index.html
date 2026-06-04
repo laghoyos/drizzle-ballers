@@ -516,6 +516,23 @@
 
 
 
+  /* ── BOOKING STEPS ── */
+  .booking-step {
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .summary-box {
+    background: var(--dark);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+  }
+
   /* ── KID COUNTER ── */
   .kid-counter {
     background: rgba(105,190,40,0.06);
@@ -760,16 +777,41 @@
         </ul>
 
         <!-- Kid counter widget -->
-        <div class="kid-counter">
-          <div class="kid-counter-label">How many kids?</div>
-          <div class="kid-counter-controls">
-            <button class="kc-btn" onclick="changeKids(-1)">−</button>
-            <span class="kc-count" id="kc-count">1</span>
-            <button class="kc-btn" onclick="changeKids(1)">+</button>
+        <div id="booking-step-1" class="booking-step">
+          <div class="kid-counter">
+            <div class="kid-counter-label">How many kids?</div>
+            <div class="kid-counter-controls">
+              <button class="kc-btn" onclick="changeKids(-1)">−</button>
+              <span class="kc-count" id="kc-count">1</span>
+              <button class="kc-btn" onclick="changeKids(1)">+</button>
+            </div>
+            <div class="kc-total">Total: <strong id="kc-total">$35</strong><span id="kc-savings" style="color:var(--green);font-size:0.8rem;font-weight:800;margin-left:0.4rem;"></span></div>
           </div>
-          <div class="kc-total">Total: <strong id="kc-total">$35</strong><span id="kc-savings" style="color:var(--green);font-size:0.8rem;font-weight:800;margin-left:0.4rem;"></span></div>
+          <button onclick="showCalendly()" class="btn-primary" style="display:block;width:100%;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:0.8rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Pick a Date & Time →</button>
         </div>
-        <a id="group-book-btn" href="https://calendly.com/drizzleballers/beginners?redirect_url=https%3A%2F%2Fdrizzleballers.github.io%2Fconfirm.html%3Fkids%3D1" target="_blank" class="btn-primary" style="display:block;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:0.8rem;">Pick a Date & Time →</a>
+
+        <!-- Calendly widget -->
+        <div id="booking-step-2" class="booking-step" style="display:none;">
+          <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Step 2: Choose Your Slot</div>
+          <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:600px;"></div>
+        </div>
+
+        <!-- Payment confirmation -->
+        <div id="booking-step-3" class="booking-step" style="display:none;">
+          <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Step 3: Complete Payment</div>
+          <div class="summary-box">
+            <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+              <span style="color:var(--gray);font-size:0.85rem;font-weight:700;">Kids</span>
+              <span id="pay-kids" style="color:var(--white);font-weight:800;">1 kid</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:0.5rem 0;">
+              <span style="color:var(--gray);font-size:0.85rem;font-weight:700;">Total</span>
+              <span id="pay-total" style="color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:1.6rem;font-weight:900;line-height:1;">$35</span>
+            </div>
+          </div>
+          <a id="stripe-btn" href="#" target="_blank" class="btn-primary" style="display:block;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:0.8rem;">💳 Complete Payment →</a>
+          <button onclick="backToCalendly()" class="btn-secondary" style="display:block;width:100%;font-size:0.85rem;padding:0.65rem 1.5rem;text-align:center;margin-top:0.6rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">← Back</button>
+        </div>
       </div>
 
       <div class="program-card">
@@ -1054,7 +1096,7 @@
 </footer>
 
 <script>
-// ── KID COUNTER ──
+// ── BOOKING FLOW ──
 const STRIPE_LINKS = {
   1: 'https://buy.stripe.com/14AdR8ajPfBCfwQd6x8N201',
   2: 'https://buy.stripe.com/9B6cN4ajPcpq3O81nP8N202',
@@ -1062,23 +1104,74 @@ const STRIPE_LINKS = {
   4: 'https://buy.stripe.com/dRm14meA5dtu5Wg2rT8N204',
   5: 'https://buy.stripe.com/00w14m9fLahi4Sc3vX8N205'
 };
-const PRICES = { 1: 35, 2: 65, 3: 90, 4: 110, 5: 120 };
-let kidCount = 1;
+const PRICES  = { 1: 35, 2: 65, 3: 90, 4: 110, 5: 120 };
+const SAVINGS = { 1: 0,  2: 5,  3: 15, 4: 30,  5: 55  };
+
+let kidCount = parseInt(localStorage.getItem('drizzle_kids')) || 1;
 
 function changeKids(delta) {
   kidCount = Math.min(5, Math.max(1, kidCount + delta));
+  localStorage.setItem('drizzle_kids', kidCount);
+  updateKidDisplay();
+}
+
+function updateKidDisplay() {
   document.getElementById('kc-count').textContent = kidCount;
   document.getElementById('kc-total').textContent = `$${PRICES[kidCount]}`;
-  const savings = kidCount > 1 ? ` · save $${(kidCount * 35) - PRICES[kidCount]}` : '';
+  const savings = SAVINGS[kidCount] > 0 ? ` · save $${SAVINGS[kidCount]}` : '';
   document.getElementById('kc-savings').textContent = savings;
-  document.getElementById('group-book-btn').href =
-    `https://calendly.com/drizzleballers/beginners?redirect_url=${encodeURIComponent('https://drizzleballers.github.io/confirm.html?kids=' + kidCount)}`;
   document.querySelectorAll('.kc-btn')[0].disabled = kidCount === 1;
   document.querySelectorAll('.kc-btn')[1].disabled = kidCount === 5;
 }
 
+function showCalendly() {
+  document.getElementById('booking-step-1').style.display = 'none';
+  document.getElementById('booking-step-2').style.display = 'block';
+  document.getElementById('booking-step-3').style.display = 'none';
+  setTimeout(() => {
+    if (window.Calendly) Calendly.initInlineWidgets();
+  }, 100);
+  // Set up booking detection
+  detectCalendlyBooking();
+}
+
+function backToCalendly() {
+  document.getElementById('booking-step-2').style.display = 'block';
+  document.getElementById('booking-step-3').style.display = 'none';
+}
+
+function showPayment() {
+  document.getElementById('booking-step-2').style.display = 'none';
+  document.getElementById('booking-step-3').style.display = 'block';
+  document.getElementById('pay-kids').textContent = kidCount === 1 ? '1 kid' : `${kidCount} kids`;
+  document.getElementById('pay-total').textContent = `$${PRICES[kidCount]}`;
+  document.getElementById('stripe-btn').href = STRIPE_LINKS[kidCount];
+}
+
+function detectCalendlyBooking() {
+  // Listen for Calendly booking event
+  if (window.Calendly) {
+    window.Calendly.destroyEventListener('event_scheduled', showPayment);
+    window.Calendly.addEventListener('event_scheduled', showPayment);
+  } else {
+    // Fallback: add manual "Continue to Payment" button after a short delay
+    setTimeout(() => {
+      const calendlyWidget = document.querySelector('.calendly-inline-widget');
+      if (calendlyWidget && !document.getElementById('manual-continue-btn')) {
+        const continueBtn = document.createElement('button');
+        continueBtn.id = 'manual-continue-btn';
+        continueBtn.className = 'btn-primary';
+        continueBtn.textContent = 'Continue to Payment →';
+        continueBtn.style.cssText = 'display:block;width:100%;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:1rem;border:none;cursor:pointer;font-family:Nunito,sans-serif;';
+        continueBtn.onclick = showPayment;
+        calendlyWidget.parentNode.insertBefore(continueBtn, calendlyWidget.nextSibling);
+      }
+    }, 1500);
+  }
+}
+
 // init
-document.querySelectorAll('.kc-btn')[0].disabled = true;
+updateKidDisplay();
 
 
 document.querySelectorAll('.program-card').forEach(card => {

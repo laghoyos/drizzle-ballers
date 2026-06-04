@@ -1184,19 +1184,25 @@ function showCalendly() {
   const levelLabel = levelSelected === 'beginners' ? 'Beginners' : 'Experienced';
   document.getElementById('level-display').textContent = levelLabel;
   
-  // Update Calendly widget URL
+  // Recreate the Calendly widget with correct URL
   const calendlyUrl = CALENDLY_LINKS[levelSelected];
   const widget = document.getElementById('calendly-widget');
   widget.setAttribute('data-url', calendlyUrl);
   
-  // Reload Calendly widget
+  // Force Calendly to reload the widget
   if (window.Calendly) {
+    // Clear the widget content
+    widget.innerHTML = '';
+    // Reset the data-url
+    widget.setAttribute('data-url', calendlyUrl);
+    // Reinitialize
     setTimeout(() => {
-      window.Calendly.initInlineWidgets();
+      if (window.Calendly) {
+        window.Calendly.initInlineWidgets();
+        detectCalendlyBooking();
+      }
     }, 100);
   }
-  
-  detectCalendlyBooking();
 }
 
 function backToCalendly() {
@@ -1226,7 +1232,14 @@ function detectCalendlyBooking() {
 
 // init
 updateKidDisplay();
-document.getElementById('btn-beginners').classList.add('active');
+// Initialize with saved level
+if (levelSelected === 'experienced') {
+  document.getElementById('btn-beginners').classList.remove('active');
+  document.getElementById('btn-experienced').classList.add('active');
+} else {
+  document.getElementById('btn-beginners').classList.add('active');
+  document.getElementById('btn-experienced').classList.remove('active');
+}
 
 
 document.querySelectorAll('.program-card').forEach(card => {

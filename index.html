@@ -1015,7 +1015,20 @@
 </footer>
 
 <script>
-// ── CALENDLY LINKS ──
+// ── PROGRAM CARD CLICK HIGHLIGHT ──
+document.querySelectorAll('.program-card').forEach(card => {
+  card.style.cursor = 'pointer';
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.program-card').forEach(c => {
+      c.classList.remove('featured');
+      c.querySelector('.program-tag').classList.add('gray');
+    });
+    card.classList.add('featured');
+    card.querySelector('.program-tag').classList.remove('gray');
+  });
+});
+
+
 const LINKS = {
   private:    'https://calendly.com/drizzleballers/private',
   beginners:  'https://calendly.com/drizzleballers/beginners',

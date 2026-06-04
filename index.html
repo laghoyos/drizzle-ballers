@@ -828,9 +828,7 @@
         <!-- Calendly widget -->
         <div id="booking-step-2" class="booking-step" style="display:none;">
           <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Step 2: Choose Your Slot — <span id="level-display">Beginners</span></div>
-          <div id="calendly-widget-container">
-            <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:600px;"></div>
-          </div>
+          <div id="calendly-widget" class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:600px;"></div>
         </div>
 
         <!-- Payment confirmation -->
@@ -1186,14 +1184,18 @@ function showCalendly() {
   const levelLabel = levelSelected === 'beginners' ? 'Beginners' : 'Experienced';
   document.getElementById('level-display').textContent = levelLabel;
   
-  // Update Calendly widget
+  // Update Calendly widget URL
   const calendlyUrl = CALENDLY_LINKS[levelSelected];
-  const container = document.getElementById('calendly-widget-container');
-  container.innerHTML = `<div class="calendly-inline-widget" data-url="${calendlyUrl}" style="min-width:320px;height:600px;"></div>`;
+  const widget = document.getElementById('calendly-widget');
+  widget.setAttribute('data-url', calendlyUrl);
   
-  setTimeout(() => {
-    if (window.Calendly) Calendly.initInlineWidgets();
-  }, 100);
+  // Reload Calendly widget
+  if (window.Calendly) {
+    setTimeout(() => {
+      window.Calendly.initInlineWidgets();
+    }, 100);
+  }
+  
   detectCalendlyBooking();
 }
 
@@ -1214,22 +1216,11 @@ function showPayment() {
 }
 
 function detectCalendlyBooking() {
+  // Set up event listener when Calendly is ready
   if (window.Calendly) {
-    window.Calendly.destroyEventListener('event_scheduled', showPayment);
-    window.Calendly.addEventListener('event_scheduled', showPayment);
-  } else {
-    setTimeout(() => {
-      const calendlyWidget = document.querySelector('.calendly-inline-widget');
-      if (calendlyWidget && !document.getElementById('manual-continue-btn')) {
-        const continueBtn = document.createElement('button');
-        continueBtn.id = 'manual-continue-btn';
-        continueBtn.className = 'btn-primary';
-        continueBtn.textContent = 'Continue to Payment →';
-        continueBtn.style.cssText = 'display:block;width:100%;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;margin-top:1rem;border:none;cursor:pointer;font-family:Nunito,sans-serif;';
-        continueBtn.onclick = showPayment;
-        calendlyWidget.parentNode.insertBefore(continueBtn, calendlyWidget.nextSibling);
-      }
-    }, 1500);
+    window.Calendly.addEventListener('event_scheduled', function onEventScheduled(e) {
+      showPayment();
+    });
   }
 }
 

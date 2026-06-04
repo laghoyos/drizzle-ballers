@@ -470,6 +470,79 @@
   .form-group select option { background: var(--card-bg); }
   .form-group textarea { resize: vertical; min-height: 100px; }
 
+  /* ── BOOK TABS ── */
+  .book-tabs {
+    display: flex; gap: 0.75rem; flex-wrap: wrap;
+    margin: 2.5rem 0 0;
+  }
+  .book-tab {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--silver);
+    padding: 0.7rem 1.3rem;
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .book-tab:hover { border-color: var(--green); color: var(--white); }
+  .book-tab.active { background: var(--green); color: var(--navy); border-color: var(--green); }
+  .book-tab.bundle-tab { border-color: rgba(245,158,11,0.3); color: #f59e0b; }
+  .book-tab.bundle-tab.active { background: #f59e0b; color: var(--navy); border-color: #f59e0b; }
+
+  .tab-panel { margin-top: 1.5rem; }
+  .tab-info {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
+  }
+  .tab-badge {
+    background: rgba(105,190,40,0.1);
+    border: 1px solid rgba(105,190,40,0.25);
+    color: var(--green);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    padding: 0.3rem 0.9rem;
+    border-radius: 50px;
+    white-space: nowrap;
+  }
+  .tab-info p { color: var(--silver); font-size: 0.9rem; line-height: 1.5; }
+
+  /* bundle unlock */
+  .bundle-unlock-box {
+    display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap;
+    background: var(--card-bg);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    max-width: 500px;
+  }
+  .bundle-unlock-box input {
+    flex: 1; min-width: 200px;
+    background: var(--dark);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    color: var(--white);
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    letter-spacing: 2px;
+  }
+  .bundle-unlock-box input:focus { border-color: #f59e0b; }
+  #bundle-msg { width: 100%; font-size: 0.85rem; font-weight: 700; margin-top: 0.3rem; }
+  #bundle-msg.error { color: #f87171; }
+  #bundle-msg.success { color: var(--green); }
+
   /* ── FREE SESSION ── */
   #free-session {
     background: linear-gradient(135deg, rgba(105,190,40,0.12) 0%, var(--navy) 60%);
@@ -697,72 +770,72 @@
 
       <div class="schedule-day">
         <div class="day-name">Monday</div>
-        <div class="no-class">No classes</div>
+        <div class="class-slot">
+          <div class="slot-time">5:30 PM – 6:45 PM</div>
+          <div class="slot-name">Beginners Group</div>
+          <div class="slot-age">90 min · Max 16</div>
+        </div>
+        <div class="class-slot" style="border-left-color:var(--silver);">
+          <div class="slot-time">7:00 PM – 8:00 PM</div>
+          <div class="slot-name">Private 1-on-1</div>
+          <div class="slot-age">60 min · By appointment</div>
+        </div>
       </div>
 
       <div class="schedule-day">
         <div class="day-name">Tuesday</div>
-        <div class="class-slot">
-          <div class="slot-time">4:30 PM – 5:30 PM</div>
-          <div class="slot-name">Beginner Ballers</div>
-          <div class="slot-age">Ages 5–7</div>
+        <div class="class-slot" style="border-left-color:#f59e0b;">
+          <div class="slot-time">Hours vary</div>
+          <div class="slot-name">Experienced Group</div>
+          <div class="slot-age">90 min · Max 16</div>
         </div>
       </div>
 
       <div class="schedule-day">
         <div class="day-name">Wednesday</div>
         <div class="class-slot">
-          <div class="slot-time">5:00 PM – 6:00 PM</div>
-          <div class="slot-name">Rising Stars</div>
-          <div class="slot-age">Ages 8–10</div>
+          <div class="slot-time">5:30 PM – 6:45 PM</div>
+          <div class="slot-name">Beginners Group</div>
+          <div class="slot-age">90 min · Max 16</div>
+        </div>
+        <div class="class-slot" style="border-left-color:var(--silver);">
+          <div class="slot-time">7:00 PM – 8:00 PM</div>
+          <div class="slot-name">Private 1-on-1</div>
+          <div class="slot-age">60 min · By appointment</div>
         </div>
       </div>
 
       <div class="schedule-day">
         <div class="day-name">Thursday</div>
-        <div class="class-slot">
-          <div class="slot-time">4:30 PM – 5:30 PM</div>
-          <div class="slot-name">Beginner Ballers</div>
-          <div class="slot-age">Ages 5–7</div>
+        <div class="class-slot" style="border-left-color:#f59e0b;">
+          <div class="slot-time">Hours vary</div>
+          <div class="slot-name">Experienced Group</div>
+          <div class="slot-age">90 min · Max 16</div>
         </div>
       </div>
 
       <div class="schedule-day">
         <div class="day-name">Friday</div>
-        <div class="no-class">No classes</div>
+        <div class="class-slot">
+          <div class="slot-time">5:30 PM – 6:45 PM</div>
+          <div class="slot-name">Beginners Group</div>
+          <div class="slot-age">90 min · Max 16</div>
+        </div>
+        <div class="class-slot" style="border-left-color:var(--silver);">
+          <div class="slot-time">7:00 PM – 8:00 PM</div>
+          <div class="slot-name">Private 1-on-1</div>
+          <div class="slot-age">60 min · By appointment</div>
+        </div>
       </div>
 
       <div class="schedule-day">
         <div class="day-name">Saturday</div>
-        <div class="class-slot">
-          <div class="slot-time">9:00 AM – 10:00 AM</div>
-          <div class="slot-name">Beginner Ballers</div>
-          <div class="slot-age">Ages 5–7</div>
-        </div>
-        <div class="class-slot">
-          <div class="slot-time">10:30 AM – 11:30 AM</div>
-          <div class="slot-name">Rising Stars</div>
-          <div class="slot-age">Ages 8–10</div>
-        </div>
-        <div class="class-slot">
-          <div class="slot-time">12:00 PM – 1:00 PM</div>
-          <div class="slot-name">Next Level</div>
-          <div class="slot-age">Ages 10–12</div>
-        </div>
+        <div class="no-class">No classes</div>
       </div>
 
       <div class="schedule-day">
         <div class="day-name">Sunday</div>
-        <div class="class-slot">
-          <div class="slot-time">10:00 AM – 11:00 AM</div>
-          <div class="slot-name">Rising Stars</div>
-          <div class="slot-age">Ages 8–10</div>
-        </div>
-        <div class="class-slot">
-          <div class="slot-time">11:30 AM – 12:30 PM</div>
-          <div class="slot-name">Next Level</div>
-          <div class="slot-age">Ages 10–12</div>
-        </div>
+        <div class="no-class">No classes</div>
       </div>
 
     </div>
@@ -826,16 +899,59 @@
   <div class="container">
     <div class="section-label">Ready to Train?</div>
     <h2 class="section-title">BOOK A SESSION</h2>
-    <p class="section-sub">Pick a time that works for you. All private sessions are booked through Calendly.</p>
-    <div class="book-inner">
-      <div class="calendly-placeholder">
-        <div class="icon">📅</div>
-        <p><strong style="color:var(--white);">Calendly Embed Goes Here</strong><br>
-        Replace this block with your Calendly embed script.<br>
-        Add: <code style="color:var(--green);font-size:0.85rem;">&lt;!-- Calendly inline widget --&gt;</code></p>
-        <a href="https://calendly.com" target="_blank" class="btn-primary" style="display:inline-block;font-size:0.9rem;">Set Up Calendly →</a>
+    <p class="section-sub">Choose your session type below and pick a time that works for you.</p>
+
+    <!-- Tab buttons -->
+    <div class="book-tabs">
+      <button class="book-tab active" onclick="switchTab('private', this)">🎯 Private 1-on-1</button>
+      <button class="book-tab" onclick="switchTab('beginners', this)">⭐ Beginners Group</button>
+      <button class="book-tab" onclick="switchTab('experienced', this)">🔥 Experienced Group</button>
+      <button class="book-tab bundle-tab" onclick="switchTab('bundle', this)">🔒 Bundle Members</button>
+    </div>
+
+    <!-- Private -->
+    <div id="tab-private" class="tab-panel">
+      <div class="tab-info">
+        <span class="tab-badge">1-on-1 · 60 min · Mon / Wed / Fri · 7–8 PM</span>
+        <p>Fully personalized session. Book directly via Calendly — payment handled through Stripe at booking.</p>
+      </div>
+      <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/private" style="min-width:320px;height:680px;"></div>
+    </div>
+
+    <!-- Beginners -->
+    <div id="tab-beginners" class="tab-panel" style="display:none;">
+      <div class="tab-info">
+        <span class="tab-badge">Group · 90 min · Mon / Wed / Fri · 5:30–6:45 PM · Max 16 players</span>
+        <p>For players just getting started. Fun drills, basic technique, small-sided games.</p>
+      </div>
+      <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:680px;"></div>
+    </div>
+
+    <!-- Experienced -->
+    <div id="tab-experienced" class="tab-panel" style="display:none;">
+      <div class="tab-info">
+        <span class="tab-badge">Group · 90 min · Tue / Thu · Max 16 players</span>
+        <p>For players with some experience looking to level up their game. Higher intensity, tactical focus.</p>
+      </div>
+      <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/experienced" style="min-width:320px;height:680px;"></div>
+    </div>
+
+    <!-- Bundle unlock -->
+    <div id="tab-bundle" class="tab-panel" style="display:none;">
+      <div class="tab-info">
+        <span class="tab-badge">🔒 Bundle Members Only · Enter your password to book</span>
+        <p>Already purchased the monthly bundle? Enter the password you received to access your booking link.</p>
+      </div>
+      <div class="bundle-unlock-box">
+        <input type="password" id="bundle-pw" placeholder="Enter bundle password" onkeydown="if(event.key==='Enter')unlockBundle()"/>
+        <button class="btn-primary" onclick="unlockBundle()" style="border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Unlock →</button>
+        <div id="bundle-msg"></div>
+      </div>
+      <div id="bundle-calendly" style="display:none;">
+        <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:680px;"></div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -973,6 +1089,40 @@
 </footer>
 
 <script>
+// ── CALENDLY LINKS ──
+const LINKS = {
+  private:    'https://calendly.com/drizzleballers/private',
+  beginners:  'https://calendly.com/drizzleballers/beginners',
+  experienced:'https://calendly.com/drizzleballers/experienced',
+  freePass:   'https://calendly.com/drizzleballers/free-pass',
+  bundle:     'https://calendly.com/drizzleballers/beginners'
+};
+
+const BUNDLE_PASSWORD = 'drizzle2025'; // change this to match your Calendly password
+
+// ── TAB SWITCHING ──
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.book-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).style.display = 'block';
+  btn.classList.add('active');
+  window.Calendly && Calendly.initInlineWidgets();
+}
+
+// ── BUNDLE UNLOCK ──
+function unlockBundle() {
+  const pw  = document.getElementById('bundle-pw').value;
+  const msg = document.getElementById('bundle-msg');
+  if (pw === BUNDLE_PASSWORD) {
+    document.getElementById('bundle-calendly').style.display = 'block';
+    document.querySelector('.bundle-unlock-box').style.display = 'none';
+    window.Calendly && Calendly.initInlineWidgets();
+  } else {
+    msg.className = 'error';
+    msg.textContent = '⚠️ Wrong password. Check your confirmation message from Drizzle Ballers.';
+  }
+}
+
 // ── FREE SESSION CLAIM ──
 function normalizePhone(raw) {
   return raw.replace(/\D/g, '');
@@ -1013,10 +1163,18 @@ function claimFreeSession(e) {
   existing.push(record);
   localStorage.setItem('db_free_sessions', JSON.stringify(existing));
 
+  // show success + Calendly link
   msg.className = 'success';
-  msg.textContent = `✅ You're on the list, ${name}! We'll WhatsApp you within 24 hours to confirm your slot.`;
-  e.target.querySelector('button[type="submit"]').disabled = true;
-  e.target.querySelector('button[type="submit"]').textContent = '🎉 Claimed!';
+  msg.innerHTML = `✅ You're on the list, <strong>${name}</strong>! Click below to book your free class slot:
+    <a href="${LINKS.freePass}" target="_blank" 
+       style="display:block;margin-top:1rem;background:var(--green);color:var(--navy);
+              font-weight:900;padding:0.85rem 1.5rem;border-radius:6px;text-decoration:none;
+              text-align:center;font-size:1rem;letter-spacing:1px;">
+      📅 Book My Free Session →
+    </a>`;
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = '🎉 Claimed!';
 }
 
 
@@ -1061,5 +1219,6 @@ document.querySelectorAll('.program-card, .pricing-card, .schedule-day, .stat-ch
   observer.observe(el);
 });
 </script>
+<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
 </body>
 </html>

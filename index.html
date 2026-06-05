@@ -961,50 +961,6 @@
   </div>
 </section>
 
-<!-- BOOK -->
-<section id="book">
-  <div class="container">
-    <div class="section-label">Ready to Train?</div>
-    <h2 class="section-title">BOOK A SESSION</h2>
-    <p class="section-sub">Choose your session type below and pick a time that works for you.</p>
-
-    <!-- Tab buttons -->
-    <div class="book-tabs">
-      <button class="book-tab active" onclick="switchTab('private', this)">🎯 Private 1-on-1</button>
-      <button class="book-tab" onclick="switchTab('beginners', this)">⭐ Beginners Group</button>
-      <button class="book-tab" onclick="switchTab('experienced', this)">🔥 Experienced Group</button>
-    </div>
-
-    <!-- Private -->
-    <div id="tab-private" class="tab-panel">
-      <div class="tab-info">
-        <span class="tab-badge">1-on-1 · 60 min · Mon / Wed / Fri · 7–8 PM</span>
-        <p>Fully personalized session. Book directly via Calendly — payment handled through Stripe at booking.</p>
-      </div>
-      <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/private" style="min-width:320px;height:680px;"></div>
-    </div>
-
-    <!-- Beginners -->
-    <div id="tab-beginners" class="tab-panel" style="display:none;">
-      <div class="tab-info">
-        <span class="tab-badge">Group · 1h 15min · Mon / Wed / Fri · 5:30–6:45 PM · Max 16 players</span>
-        <p>For players just getting started. Fun drills, basic technique, small-sided games.</p>
-      </div>
-      <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:680px;"></div>
-    </div>
-
-    <!-- Experienced -->
-    <div id="tab-experienced" class="tab-panel" style="display:none;">
-      <div class="tab-info">
-        <span class="tab-badge">Group · 1h 15min · Tue / Thu · Max 16 players</span>
-        <p>For players with some experience looking to level up their game. Higher intensity, tactical focus.</p>
-      </div>
-      <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/experienced" style="min-width:320px;height:680px;"></div>
-    </div>
-
-  </div>
-</section>
-
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
@@ -1179,10 +1135,22 @@ function setLevel(level) {
 
 // Show group booking (triggered from Group Classes card)
 function showGroupBooking() {
+  levelSelected = 'beginners';
+  localStorage.setItem('drizzle_level', 'beginners');
+  
+  // Show kid counter and level selector
   document.getElementById('booking-step-1').style.display = 'block';
   document.getElementById('booking-step-2').style.display = 'none';
   document.getElementById('payment-button-container').style.display = 'none';
-  document.getElementById('booking-step-1').scrollIntoView({ behavior: 'smooth' });
+  
+  // Reset buttons
+  document.getElementById('btn-beginners').classList.add('active');
+  document.getElementById('btn-experienced').classList.remove('active');
+  
+  // Scroll to booking section
+  setTimeout(() => {
+    document.getElementById('booking-step-1').scrollIntoView({ behavior: 'smooth' });
+  }, 100);
 }
 
 function setLevelAndShowCalendly(level) {
@@ -1210,6 +1178,14 @@ function setLevelAndShowCalendly(level) {
   // Update price display (group pricing, not private)
   updateKidDisplay();
   
+  // Scroll to booking section and init Calendly
+  setTimeout(() => {
+    document.getElementById('booking-step-2').scrollIntoView({ behavior: 'smooth' });
+    if (window.Calendly) {
+      window.Calendly.initInlineWidgets();
+    }
+  }, 100);
+  
   // Set up booking detection
   detectBookingConfirmation();
 }
@@ -1219,20 +1195,26 @@ function startPrivateBooking() {
   levelSelected = 'private';
   localStorage.setItem('drizzle_level', 'private');
   
-  // Hide payment button until booking confirmed
+  // Hide kid counter, go straight to Calendly
+  document.getElementById('booking-step-1').style.display = 'none';
+  document.getElementById('booking-step-2').style.display = 'block';
   document.getElementById('payment-button-container').style.display = 'none';
-  
-  // Show Calendly step
-  document.getElementById("booking-step-1").style.display = "none";
-  document.getElementById("booking-step-2").style.display = "block";
   
   // Update level label
   document.getElementById('level-display').textContent = 'Private 1-on-1 · $75/session';
   
-  // Show only private widget
+  // Show only private widget, hide group widgets
   document.getElementById('calendly-beginners').style.display = 'none';
   document.getElementById('calendly-experienced').style.display = 'none';
   document.getElementById('calendly-private').style.display = 'block';
+  
+  // Scroll to booking section
+  setTimeout(() => {
+    document.getElementById('booking-step-2').scrollIntoView({ behavior: 'smooth' });
+    if (window.Calendly) {
+      window.Calendly.initInlineWidgets();
+    }
+  }, 100);
   
   // Set up booking detection
   detectBookingConfirmation();

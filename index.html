@@ -781,7 +781,7 @@
     <p class="section-sub">Simple, transparent pricing — no hidden fees. Choose the training style that fits your kid.</p>
     <div class="programs-grid">
 
-      <div class="program-card featured">
+      <div class="program-card featured" onmouseenter="this.style.transform='translateY(-8px)'; this.style.borderColor='rgba(105,190,40,0.5)'" onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='rgba(105,190,40,0.2)'">
         <div class="program-tag">⭐ Most Popular</div>
         <div class="program-icon">👥</div>
         <div class="program-name">Group Classes</div>
@@ -797,10 +797,28 @@
           <li>Team drills & mini-games</li>
           <li>All skill levels welcome</li>
         </ul>
-        <button onclick="showGroupBooking()" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Book Now</button>
+        
+        <!-- Group Calendly -->
+        <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Select Level & Book</div>
+          <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+            <button onclick="toggleGroupLevel(this, 'beginners')" class="level-btn active" data-level="beginners">
+              ⭐ Beginners
+            </button>
+            <button onclick="toggleGroupLevel(this, 'experienced')" class="level-btn" data-level="experienced">
+              🔥 Experienced
+            </button>
+          </div>
+          <div id="group-beginners-cal" style="display:block;">
+            <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:100%;height:500px;"></div>
+          </div>
+          <div id="group-experienced-cal" style="display:none;">
+            <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/experienced" style="min-width:100%;height:500px;"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="program-card">
+      <div class="program-card" onmouseenter="this.style.transform='translateY(-8px)'; this.style.borderColor='rgba(105,190,40,0.5)'" onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='rgba(105,190,40,0.2)'">
         <div class="program-tag gray">1-on-1 & Clinics</div>
         <div class="program-icon">🎯</div>
         <div class="program-name">Private & Skill Sessions</div>
@@ -816,65 +834,14 @@
           <li>Open to any skill level</li>
           <li>Great complement to group classes</li>
         </ul>
-        <button onclick="startPrivateBooking()" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Book Now</button>
-      </div>
-
-    </div>
-
-    <!-- Booking Flow Blocks -->
-    <!-- Kid counter + Level selector widget -->
-    <div id="booking-step-1" class="booking-step">
-      <div class="kid-counter">
-        <div class="kid-counter-label">How many kids?</div>
-        <div class="kid-counter-controls">
-          <button class="kc-btn" onclick="changeKids(-1)">−</button>
-          <span class="kc-count" id="kc-count">1</span>
-          <button class="kc-btn" onclick="changeKids(1)">+</button>
-        </div>
-        <div class="kc-total">Total: <strong id="kc-total">$35</strong><span id="kc-savings" style="color:var(--green);font-size:0.8rem;font-weight:800;margin-left:0.4rem;"></span></div>
-      </div>
-
-      <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06);">
-        <div style="font-size:0.82rem;font-weight:800;color:var(--silver);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:1rem;">Choose Level</div>
-        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
-          <button onclick="setLevelAndShowCalendly('beginners')" id="btn-beginners" class="level-btn active">
-            ⭐ Beginners<br><span style="font-size:0.7rem;color:var(--gray);">Mon/Wed/Fri 5:30–6:45 PM</span>
-          </button>
-          <button onclick="setLevelAndShowCalendly('experienced')" id="btn-experienced" class="level-btn">
-            🔥 Experienced<br><span style="font-size:0.7rem;color:var(--gray);">Tue/Thu</span>
-          </button>
+        
+        <!-- Private Calendly -->
+        <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Book Your Session</div>
+          <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/private" style="min-width:100%;height:500px;"></div>
         </div>
       </div>
-    </div>
 
-    <!-- Calendly widget + Payment -->
-    <div id="booking-step-2" class="booking-step" style="display:none;">
-      <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Select Your Time — <span id="level-display">Beginners</span></div>
-      
-      <!-- Beginners widget -->
-      <div id="calendly-beginners" style="display:none;">
-        <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:600px;"></div>
-      </div>
-      
-      <!-- Experienced widget -->
-      <div id="calendly-experienced" style="display:none;">
-        <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/experienced" style="min-width:320px;height:600px;"></div>
-      </div>
-      
-      <!-- Private 1-on-1 widget -->
-      <div id="calendly-private" style="display:none;">
-        <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/private" style="min-width:320px;height:600px;"></div>
-      </div>
-      
-      <!-- Payment button (appears after booking) -->
-      <div id="payment-button-container" style="display:none;margin-top:1rem;">
-        <div style="background:rgba(105,190,40,0.1);border:1px solid var(--green);border-radius:10px;padding:1rem;margin-bottom:1rem;">
-          <div style="color:var(--green);font-weight:800;margin-bottom:0.5rem;">✓ Booking Confirmed!</div>
-          <div style="color:var(--gray);font-size:0.85rem;">Kids: <strong id="confirm-kids">1</strong> · Total: <strong id="confirm-total">$35</strong></div>
-        </div>
-        <a id="stripe-payment-btn" href="#" target="_blank" class="btn-primary" style="display:block;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">💳 Complete Payment →</a>
-        <button onclick="backToLevel()" class="btn-secondary" style="display:block;width:100%;font-size:0.85rem;padding:0.65rem 1.5rem;text-align:center;margin-top:0.6rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">← Change Level</button>
-      </div>
     </div>
   </div>
 </section>
@@ -1126,31 +1093,25 @@ function updateKidDisplay() {
   document.querySelectorAll('.kc-btn')[1].disabled = kidCount === 6;
 }
 
-function setLevel(level) {
-  levelSelected = level;
-  localStorage.setItem('drizzle_level', level);
-  document.getElementById('btn-beginners').classList.toggle('active', level === 'beginners');
-  document.getElementById('btn-experienced').classList.toggle('active', level === 'experienced');
-}
-
-// Show group booking (triggered from Group Classes card)
-function showGroupBooking() {
-  levelSelected = 'beginners';
-  localStorage.setItem('drizzle_level', 'beginners');
+// Toggle group level (Beginners/Experienced)
+function toggleGroupLevel(btn, level) {
+  // Update active button
+  document.querySelectorAll('.program-card .level-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
   
-  // Show kid counter and level selector
-  document.getElementById('booking-step-1').style.display = 'block';
-  document.getElementById('booking-step-2').style.display = 'none';
-  document.getElementById('payment-button-container').style.display = 'none';
+  // Show/hide correct Calendly widget
+  if (level === 'beginners') {
+    document.getElementById('group-beginners-cal').style.display = 'block';
+    document.getElementById('group-experienced-cal').style.display = 'none';
+  } else {
+    document.getElementById('group-beginners-cal').style.display = 'none';
+    document.getElementById('group-experienced-cal').style.display = 'block';
+  }
   
-  // Reset buttons
-  document.getElementById('btn-beginners').classList.add('active');
-  document.getElementById('btn-experienced').classList.remove('active');
-  
-  // Scroll to booking section
-  setTimeout(() => {
-    document.getElementById('booking-step-1').scrollIntoView({ behavior: 'smooth' });
-  }, 100);
+  // Reinit Calendly widgets
+  if (window.Calendly) {
+    window.Calendly.initInlineWidgets();
+  }
 }
 
 function setLevelAndShowCalendly(level) {

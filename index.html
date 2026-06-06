@@ -1272,20 +1272,20 @@ if (levelSelected === 'experienced') {
 
 document.querySelectorAll('.program-card').forEach(card => {
   card.style.cursor = 'pointer';
-  const btn = card.querySelector('a');
+  const btn = card.querySelector('a, button');
 
   card.addEventListener('mouseenter', () => {
     document.querySelectorAll('.program-card').forEach(c => {
       c.classList.remove('featured');
       c.querySelector('.program-tag').classList.add('gray');
-      const b = c.querySelector('a');
+      const b = c.querySelector('a, button');
       b.className = 'btn-secondary';
-      b.style.cssText = 'display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;';
+      b.style.cssText = 'display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;border:none;cursor:pointer;font-family:"Nunito",sans-serif;';
     });
     card.classList.add('featured');
     card.querySelector('.program-tag').classList.remove('gray');
     btn.className = 'btn-primary';
-    btn.style.cssText = 'display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;';
+    btn.style.cssText = 'display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;border:none;cursor:pointer;font-family:"Nunito",sans-serif;';
   });
 });
 

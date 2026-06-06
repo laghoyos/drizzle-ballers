@@ -959,6 +959,43 @@
   </div>
 </section>
 
+<!-- FREE SESSION -->
+<section id="free-session">
+  <div class="free-session-inner">
+    <div class="free-badge">🎁 LIMITED OFFER</div>
+    <h2 class="section-title" style="color:var(--white);">FIRST GROUP CLASS<br><span style="color:var(--green);">FREE</span></h2>
+    <p class="section-sub">New to Drizzle Ballers? Bring your kid out for a free group class — no strings attached. One per family, phone number required to reserve your spot.</p>
+    <form class="free-form" onsubmit="claimFreeSession(event)">
+      <div class="form-group">
+        <label>Parent / Guardian Name</label>
+        <input type="text" id="fs-name" name="parent_name" placeholder="Your full name" required/>
+      </div>
+      <div class="form-group">
+        <label>Kid's Name</label>
+        <input type="text" id="fs-kid" name="kid_name" placeholder="Kid's first name" required/>
+      </div>
+      <div class="form-group">
+        <label>Kid's Age</label>
+        <select id="fs-age" name="kids_age" required>
+          <option value="">Select age range</option>
+          <option>5–7 years old</option>
+          <option>8–10 years old</option>
+          <option>10–12 years old</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Phone Number (for confirmation text)</label>
+        <input type="tel" id="fs-phone" name="phone" placeholder="(206) 555-0100" required/>
+      </div>
+      <div id="free-msg"></div>
+      <button type="submit" class="btn-primary" style="border:none;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;font-size:1rem;padding:1rem;">
+        Claim My Free Class ⚽
+      </button>
+      <p class="fine-print">One free class per phone number. We'll text you to confirm your spot.</p>
+    </form>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
@@ -1037,43 +1074,6 @@
       </div>
 
     </div>
-  </div>
-</section>
-
-<!-- FREE SESSION -->
-<section id="free-session">
-  <div class="free-session-inner">
-    <div class="free-badge">🎁 LIMITED OFFER</div>
-    <h2 class="section-title" style="color:var(--white);">FIRST GROUP CLASS<br><span style="color:var(--green);">FREE</span></h2>
-    <p class="section-sub">New to Drizzle Ballers? Bring your kid out for a free group class — no strings attached. One per family, phone number required to reserve your spot.</p>
-    <form class="free-form" onsubmit="claimFreeSession(event)">
-      <div class="form-group">
-        <label>Parent / Guardian Name</label>
-        <input type="text" id="fs-name" name="parent_name" placeholder="Your full name" required/>
-      </div>
-      <div class="form-group">
-        <label>Kid's Name</label>
-        <input type="text" id="fs-kid" name="kid_name" placeholder="Kid's first name" required/>
-      </div>
-      <div class="form-group">
-        <label>Kid's Age</label>
-        <select id="fs-age" name="kids_age" required>
-          <option value="">Select age range</option>
-          <option>5–7 years old</option>
-          <option>8–10 years old</option>
-          <option>10–12 years old</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Phone Number (for confirmation text)</label>
-        <input type="tel" id="fs-phone" name="phone" placeholder="(206) 555-0100" required/>
-      </div>
-      <div id="free-msg"></div>
-      <button type="submit" class="btn-primary" style="border:none;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;font-size:1rem;padding:1rem;">
-        Claim My Free Class ⚽
-      </button>
-      <p class="fine-print">One free class per phone number. We'll text you to confirm your spot.</p>
-    </form>
   </div>
 </section>
 

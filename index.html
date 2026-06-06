@@ -733,7 +733,7 @@
     </h1>
     <p class="hero-sub">Private and group soccer coaching for kids. Rain or shine, we ball out in Seattle.</p>
     <div class="hero-btns">
-      <a href="#book" class="btn-primary">Book a Session</a>
+      <a href="#programs" class="btn-primary">Book a Session</a>
       <a href="#programs" class="btn-secondary">See Programs</a>
     </div>
   </div>
@@ -1161,9 +1161,8 @@ function setLevelAndShowCalendly(level) {
   
   // Hide payment button until booking confirmed
   document.getElementById('payment-button-container').style.display = 'none';
-  
-  // Show Calendly step
-  document.getElementById("booking-step-1").style.display = "none";
+
+  // Show Calendly step (keep kid counter + level visible above)
   document.getElementById("booking-step-2").style.display = "block";
   
   // Update level label
@@ -1232,8 +1231,6 @@ function showPaymentButton() {
 }
 
 function backToLevel() {
-  document.getElementById('group-book-btn-container').style.display = 'block';
-  document.getElementById("booking-step-1").style.display = "none";
   document.getElementById("booking-step-2").style.display = "none";
   document.getElementById('payment-button-container').style.display = 'none';
 }

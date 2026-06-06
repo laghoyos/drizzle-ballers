@@ -798,8 +798,13 @@
           <li>All skill levels welcome</li>
         </ul>
 
+        <!-- Book Now button (initially visible) -->
+        <div id="group-book-btn-container" class="booking-step">
+          <button onclick="showGroupBooking()" class="btn-secondary" style="display:block;width:100%;font-size:0.85rem;padding:0.7rem 1.5rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Book Now</button>
+        </div>
+
         <!-- Kid counter + Level selector widget -->
-        <div id="booking-step-1" class="booking-step">
+        <div id="booking-step-1" class="booking-step" style="display:none;">
           <div class="kid-counter">
             <div class="kid-counter-label">How many kids?</div>
             <div class="kid-counter-controls">
@@ -1241,9 +1246,15 @@ function showPaymentButton() {
 }
 
 function backToLevel() {
-  document.getElementById("booking-step-1").style.display = "block";
+  document.getElementById('group-book-btn-container').style.display = 'block';
+  document.getElementById("booking-step-1").style.display = "none";
   document.getElementById("booking-step-2").style.display = "none";
   document.getElementById('payment-button-container').style.display = 'none';
+}
+
+function showGroupBooking() {
+  document.getElementById('group-book-btn-container').style.display = 'none';
+  document.getElementById('booking-step-1').style.display = 'block';
 }
 
 

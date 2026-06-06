@@ -1002,15 +1002,15 @@
         <form class="contact-form" onsubmit="handleSubmit(event)">
           <div class="form-group">
             <label>Parent / Guardian Name</label>
-            <input type="text" placeholder="Your name" required/>
+            <input type="text" name="parent_name" placeholder="Your name" required/>
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" placeholder="your@email.com" required/>
+            <input type="email" name="email" placeholder="your@email.com" required/>
           </div>
           <div class="form-group">
             <label>Kid's Age</label>
-            <select>
+            <select name="kids_age">
               <option value="">Select age range</option>
               <option>5–7 years old</option>
               <option>8–10 years old</option>
@@ -1020,7 +1020,7 @@
           </div>
           <div class="form-group">
             <label>Interested In</label>
-            <select>
+            <select name="interested_in">
               <option value="">Select program</option>
               <option>Private 1-on-1 Sessions</option>
               <option>Group Classes</option>
@@ -1030,7 +1030,7 @@
           </div>
           <div class="form-group">
             <label>Message</label>
-            <textarea placeholder="Tell us about your kid, goals, questions..."></textarea>
+            <textarea name="message" placeholder="Tell us about your kid, goals, questions..."></textarea>
           </div>
           <button type="submit" class="btn-primary" style="border:none;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;font-size:1rem;">Send Message ⚽</button>
         </form>
@@ -1049,15 +1049,15 @@
     <form class="free-form" onsubmit="claimFreeSession(event)">
       <div class="form-group">
         <label>Parent / Guardian Name</label>
-        <input type="text" id="fs-name" placeholder="Your full name" required/>
+        <input type="text" id="fs-name" name="parent_name" placeholder="Your full name" required/>
       </div>
       <div class="form-group">
         <label>Kid's Name</label>
-        <input type="text" id="fs-kid" placeholder="Kid's first name" required/>
+        <input type="text" id="fs-kid" name="kid_name" placeholder="Kid's first name" required/>
       </div>
       <div class="form-group">
         <label>Kid's Age</label>
-        <select id="fs-age" required>
+        <select id="fs-age" name="kids_age" required>
           <option value="">Select age range</option>
           <option>5–7 years old</option>
           <option>8–10 years old</option>
@@ -1066,7 +1066,7 @@
       </div>
       <div class="form-group">
         <label>Phone Number (for confirmation text)</label>
-        <input type="tel" id="fs-phone" placeholder="(206) 555-0100" required/>
+        <input type="tel" id="fs-phone" name="phone" placeholder="(206) 555-0100" required/>
       </div>
       <div id="free-msg"></div>
       <button type="submit" class="btn-primary" style="border:none;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;font-size:1rem;padding:1rem;">
@@ -1204,7 +1204,19 @@ function showPaymentButton() {
   const trackingLink = stripeLink + (stripeLink.includes('?') ? '&' : '?') + 'session_id=' + Date.now();
   document.getElementById('stripe-payment-btn').href = trackingLink;
   
-  // Store pending booking
+  // Record booking server-side via Formspree
+  const bookingData = new FormData();
+  bookingData.append('level', levelSelected === 'beginners' ? 'Beginners' : 'Experienced');
+  bookingData.append('kids', kidCount);
+  bookingData.append('total', '$' + PRICES[kidCount]);
+  bookingData.append('status', 'pending_payment');
+  fetch(`https://formspree.io/f/${FORMSPREE_BOOKING}`, {
+    method: 'POST',
+    body: bookingData,
+    headers: { 'Accept': 'application/json' }
+  }).catch(err => console.error('Booking record error:', err));
+
+  // Mirror to localStorage for success.html display
   const pendingBooking = {
     level: levelSelected,
     kids: kidCount,
@@ -1212,8 +1224,6 @@ function showPaymentButton() {
     timestamp: new Date().toISOString(),
     status: 'pending_payment'
   };
-  
-  // Save to localStorage
   let bookings = JSON.parse(localStorage.getItem('drizzle_bookings') || '[]');
   bookings.push(pendingBooking);
   localStorage.setItem('drizzle_bookings', JSON.stringify(bookings));
@@ -1288,11 +1298,11 @@ function normalizePhone(raw) {
 
 function claimFreeSession(e) {
   e.preventDefault();
+  const form  = e.target;
   const name  = document.getElementById('fs-name').value.trim();
-  const kid   = document.getElementById('fs-kid').value.trim();
-  const age   = document.getElementById('fs-age').value;
   const phone = normalizePhone(document.getElementById('fs-phone').value);
   const msg   = document.getElementById('free-msg');
+  const submitBtn = form.querySelector('button[type="submit"]');
 
   if (phone.length < 7) {
     msg.className = 'error';
@@ -1300,39 +1310,52 @@ function claimFreeSession(e) {
     return;
   }
 
+  // Local duplicate check — fast UX guard (Formspree is the real record)
   const existing = JSON.parse(localStorage.getItem('db_free_sessions') || '[]');
   const duplicate = existing.find(r => normalizePhone(r.phone) === phone);
-
   if (duplicate) {
     msg.className = 'error';
     msg.textContent = `⚠️ This number already claimed a free class on ${duplicate.date}. One per family!`;
     return;
   }
 
-  const record = {
-    id: Date.now(),
-    name, kid, age,
-    phone: document.getElementById('fs-phone').value.trim(),
-    date: new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
-    timestamp: new Date().toISOString(),
-    status: 'pending'
-  };
-
-  existing.push(record);
-  localStorage.setItem('db_free_sessions', JSON.stringify(existing));
-
-  // show success + Calendly link
-  msg.className = 'success';
-  msg.innerHTML = `✅ You're on the list, <strong>${name}</strong>! We'll text you at ${document.getElementById('fs-phone').value.trim()} to confirm your spot. You can also book directly below:
-    <a href="${LINKS.freePass}" target="_blank"
-       style="display:block;margin-top:1rem;background:var(--green);color:var(--navy);
-              font-weight:900;padding:0.85rem 1.5rem;border-radius:6px;text-decoration:none;
-              text-align:center;font-size:1rem;letter-spacing:1px;">
-      📅 Book My Free Class →
-    </a>`;
-  const submitBtn = e.target.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
-  submitBtn.textContent = '🎉 Claimed!';
+  submitBtn.textContent = 'Claiming…';
+
+  fetch(`https://formspree.io/f/${FORMSPREE_FREE_SESSION}`, {
+    method: 'POST',
+    body: new FormData(form),
+    headers: { 'Accept': 'application/json' }
+  })
+    .then(r => {
+      if (!r.ok) return r.json().then(d => { throw new Error(d.errors?.map(x => x.message).join(', ') || 'Error'); });
+
+      // Persist locally only after a successful server record
+      const record = {
+        name,
+        phone: document.getElementById('fs-phone').value.trim(),
+        date: new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })
+      };
+      existing.push(record);
+      localStorage.setItem('db_free_sessions', JSON.stringify(existing));
+
+      msg.className = 'success';
+      msg.innerHTML = `✅ You're on the list, <strong>${name}</strong>! We'll text you at ${document.getElementById('fs-phone').value.trim()} to confirm your spot. You can also book directly below:
+        <a href="${LINKS.freePass}" target="_blank"
+           style="display:block;margin-top:1rem;background:var(--green);color:var(--navy);
+                  font-weight:900;padding:0.85rem 1.5rem;border-radius:6px;text-decoration:none;
+                  text-align:center;font-size:1rem;letter-spacing:1px;">
+          📅 Book My Free Class →
+        </a>`;
+      submitBtn.textContent = '🎉 Claimed!';
+    })
+    .catch(err => {
+      msg.className = 'error';
+      msg.textContent = '⚠️ Something went wrong — please text us directly at (206) 730-9007.';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Claim My Free Class ⚽';
+      console.error('Free session error:', err);
+    });
 }
 
 
@@ -1347,17 +1370,44 @@ for (let i = 0; i < 40; i++) {
   rain.appendChild(drop);
 }
 
+// ── FORMSPREE IDs — replace with your own from formspree.io/forms ──
+const FORMSPREE_CONTACT     = 'xwvjvgqo';
+const FORMSPREE_FREE_SESSION = 'mykakrpa';
+const FORMSPREE_BOOKING     = 'meeweyzy';
+
 // Form submit
 function handleSubmit(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('button[type="submit"]');
-  btn.textContent = '✅ Message Sent!';
-  btn.style.background = '#2a5a00';
-  setTimeout(() => {
-    btn.textContent = 'Send Message ⚽';
-    btn.style.background = '';
-    e.target.reset();
-  }, 3000);
+  const form = e.target;
+  const btn  = form.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  fetch(`https://formspree.io/f/${FORMSPREE_CONTACT}`, {
+    method: 'POST',
+    body: new FormData(form),
+    headers: { 'Accept': 'application/json' }
+  })
+    .then(r => {
+      if (r.ok) {
+        btn.textContent = '✅ Message Sent!';
+        btn.style.background = '#2a5a00';
+        form.reset();
+        setTimeout(() => {
+          btn.textContent = 'Send Message ⚽';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
+      } else {
+        return r.json().then(d => { throw new Error(d.errors?.map(x => x.message).join(', ') || 'Error'); });
+      }
+    })
+    .catch(err => {
+      btn.textContent = '⚠️ Failed — try emailing us';
+      btn.style.background = '#7f1d1d';
+      btn.disabled = false;
+      console.error('Contact form error:', err);
+    });
 }
 
 // Scroll animations

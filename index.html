@@ -1240,6 +1240,13 @@ function showGroupBooking() {
   document.getElementById('booking-step-1').style.display = 'block';
 }
 
+function resetGroupBooking() {
+  document.getElementById('group-book-btn-container').style.display = 'block';
+  document.getElementById('booking-step-1').style.display = 'none';
+  document.getElementById('booking-step-2').style.display = 'none';
+  document.getElementById('payment-button-container').style.display = 'none';
+}
+
 
 // init
 updateKidDisplay();
@@ -1252,6 +1259,8 @@ if (levelSelected === 'experienced') {
   document.getElementById('btn-experienced').classList.remove('active');
 }
 
+
+const groupCard = document.querySelector('.program-card.featured');
 
 document.querySelectorAll('.program-card').forEach(card => {
   card.style.cursor = 'pointer';
@@ -1270,6 +1279,10 @@ document.querySelectorAll('.program-card').forEach(card => {
     btn.className = 'btn-primary';
     btn.style.cssText = 'display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;border:none;cursor:pointer;font-family:"Nunito",sans-serif;';
   });
+
+  if (card !== groupCard) {
+    card.addEventListener('click', resetGroupBooking);
+  }
 });
 
 

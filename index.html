@@ -317,6 +317,47 @@
   }
   .program-features li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 900; }
 
+  /* ── KID COUNTER ── */
+  .kc-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--green);
+    background: transparent;
+    color: var(--green);
+    font-size: 1.2rem;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, color 0.2s;
+    line-height: 1;
+    font-family: 'Nunito', sans-serif;
+  }
+  .kc-btn:hover { background: var(--green); color: var(--navy); }
+  .kc-btn:disabled { border-color: var(--gray); color: var(--gray); cursor: not-allowed; }
+  .kc-btn:disabled:hover { background: transparent; color: var(--gray); }
+
+  /* ── LEVEL SELECTOR ── */
+  .level-btn {
+    flex: 1; min-width: 140px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    color: var(--silver);
+    padding: 1rem 0.8rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1.3;
+  }
+  .level-btn:hover { border-color: var(--green); color: var(--white); }
+  .level-btn.active {
+    background: rgba(105,190,40,0.12);
+    border-color: var(--green);
+    color: var(--green);
+  }
+
   /* ── SCHEDULE ── */
   #schedule { background: var(--card-bg); }
   .schedule-grid {
@@ -351,79 +392,6 @@
   .slot-name { font-size: 0.9rem; font-weight: 800; }
   .slot-age { font-size: 0.7rem; color: var(--gray); }
   .no-class { color: var(--gray); font-size: 0.85rem; font-style: italic; }
-
-  /* ── PRICING ── */
-  #pricing { background: var(--dark); }
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
-    margin-top: 3rem;
-  }
-  .pricing-card {
-    background: var(--card-bg);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 12px;
-    padding: 2rem;
-    text-align: center;
-    position: relative;
-    transition: transform 0.2s, border-color 0.2s;
-  }
-  .pricing-card:hover { transform: translateY(-4px); }
-  .pricing-card.popular {
-    border-color: var(--green);
-    background: linear-gradient(135deg, rgba(105,190,40,0.1), var(--card-bg));
-  }
-  .popular-badge {
-    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-    background: var(--green); color: var(--navy);
-    font-size: 0.65rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
-    padding: 0.25rem 1rem; border-radius: 50px;
-  }
-  .pricing-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem; letter-spacing: 2px;
-    margin-bottom: 0.5rem;
-  }
-  .pricing-price {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3.5rem;
-    color: var(--green);
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-  .pricing-price span { font-size: 1.5rem; }
-  .pricing-period { color: var(--gray); font-size: 0.8rem; margin-bottom: 1.5rem; }
-  .pricing-list { list-style: none; margin-bottom: 2rem; text-align: left; }
-  .pricing-list li {
-    padding: 0.4rem 0;
-    padding-left: 1.4rem;
-    position: relative;
-    color: var(--silver);
-    font-size: 0.9rem;
-  }
-  .pricing-list li::before { content: '⚽'; position: absolute; left: 0; font-size: 0.75rem; top: 0.45rem; }
-
-  /* ── BOOKING ── */
-  #book { background: var(--card-bg); }
-  .book-inner {
-    margin-top: 3rem;
-    background: var(--dark);
-    border: 1px solid rgba(105,190,40,0.2);
-    border-radius: 16px;
-    padding: 2.5rem;
-    max-width: 720px;
-  }
-  .calendly-placeholder {
-    background: rgba(105,190,40,0.04);
-    border: 2px dashed rgba(105,190,40,0.3);
-    border-radius: 10px;
-    padding: 4rem 2rem;
-    text-align: center;
-    color: var(--silver);
-  }
-  .calendly-placeholder .icon { font-size: 3rem; margin-bottom: 1rem; }
-  .calendly-placeholder p { margin-bottom: 1.5rem; line-height: 1.6; }
 
   /* ── CONTACT ── */
   #contact { background: var(--dark); }
@@ -469,150 +437,6 @@
   .form-group select:focus { border-color: var(--green); }
   .form-group select option { background: var(--card-bg); }
   .form-group textarea { resize: vertical; min-height: 100px; }
-
-  /* ── BOOK TABS ── */
-  .book-tabs {
-    display: flex; gap: 0.75rem; flex-wrap: wrap;
-    margin: 2.5rem 0 0;
-  }
-  .book-tab {
-    background: var(--card-bg);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--silver);
-    padding: 0.7rem 1.3rem;
-    border-radius: 8px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.3px;
-  }
-  .book-tab:hover { border-color: var(--green); color: var(--white); }
-  .book-tab.active { background: var(--green); color: var(--navy); border-color: var(--green); }
-
-
-  .tab-panel { margin-top: 1.5rem; }
-  .tab-info {
-    background: var(--card-bg);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 10px;
-    padding: 1.2rem 1.5rem;
-    margin-bottom: 1rem;
-    display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
-  }
-  .tab-badge {
-    background: rgba(105,190,40,0.1);
-    border: 1px solid rgba(105,190,40,0.25);
-    color: var(--green);
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    padding: 0.3rem 0.9rem;
-    border-radius: 50px;
-    white-space: nowrap;
-  }
-  .tab-info p { color: var(--silver); font-size: 0.9rem; line-height: 1.5; }
-
-
-
-  /* ── LEVEL SELECTOR ── */
-  .level-btn {
-    flex: 1; min-width: 140px;
-    background: var(--card-bg);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    color: var(--silver);
-    padding: 1rem 0.8rem;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.2s;
-    line-height: 1.3;
-  }
-  .level-btn:hover { border-color: var(--green); color: var(--white); }
-  .level-btn.active {
-    background: rgba(105,190,40,0.12);
-    border-color: var(--green);
-    color: var(--green);
-  }
-
-  /* ── BOOKING STEPS ── */
-  .booking-step {
-    animation: fadeIn 0.3s ease;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .summary-box {
-    background: var(--dark);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 10px;
-    padding: 1rem 1.2rem;
-    margin-bottom: 1rem;
-  }
-
-  /* ── KID COUNTER ── */
-  .kid-counter {
-    background: rgba(105,190,40,0.06);
-    border: 1px solid rgba(105,190,40,0.2);
-    border-radius: 10px;
-    padding: 1rem 1.2rem;
-    margin-top: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-  }
-  .kid-counter-label {
-    font-size: 0.82rem;
-    font-weight: 800;
-    color: var(--silver);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .kid-counter-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-  .kc-btn {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    border: 2px solid var(--green);
-    background: transparent;
-    color: var(--green);
-    font-size: 1.2rem;
-    font-weight: 900;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s, color 0.2s;
-    line-height: 1;
-    font-family: 'Nunito', sans-serif;
-  }
-  .kc-btn:hover { background: var(--green); color: var(--navy); }
-  .kc-btn:disabled { border-color: var(--gray); color: var(--gray); cursor: not-allowed; }
-  .kc-btn:disabled:hover { background: transparent; color: var(--gray); }
-  .kc-count {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    color: var(--white);
-    min-width: 28px;
-    text-align: center;
-    line-height: 1;
-  }
-  .kc-total {
-    font-size: 0.9rem;
-    color: var(--silver);
-  }
-  .kc-total strong {
-    color: var(--green);
-    font-size: 1.1rem;
-  }
 
   /* ── FREE SESSION ── */
   #free-session {
@@ -718,7 +542,7 @@
     <li><a href="#programs">Programs</a></li>
     <li><a href="#schedule">Schedule</a></li>
     <li><a href="#free-session" class="nav-cta">🎁 Free Class</a></li>
-    <li><a href="#book" class="nav-cta" style="background:transparent;border:1px solid var(--green);color:var(--green)!important;">Book Now</a></li>
+    <li><a href="#programs" class="nav-cta" style="background:transparent;border:1px solid var(--green);color:var(--green)!important;">Book Now</a></li>
   </ul>
 </nav>
 
@@ -733,7 +557,7 @@
     </h1>
     <p class="hero-sub">Private and group soccer coaching for kids. Rain or shine, we ball out in Seattle.</p>
     <div class="hero-btns">
-      <a href="#book" class="btn-primary">Book a Session</a>
+      <a href="#programs" class="btn-primary">Book a Session</a>
       <a href="#programs" class="btn-secondary">See Programs</a>
     </div>
   </div>
@@ -781,7 +605,8 @@
     <p class="section-sub">Simple, transparent pricing — no hidden fees. Choose the training style that fits your kid.</p>
     <div class="programs-grid">
 
-      <div class="program-card featured">
+      <!-- GROUP CLASSES CARD -->
+      <div class="program-card featured" id="group-card">
         <div class="program-tag">⭐ Most Popular</div>
         <div class="program-icon">👥</div>
         <div class="program-name">Group Classes</div>
@@ -797,58 +622,41 @@
           <li>Team drills & mini-games</li>
           <li>All skill levels welcome</li>
         </ul>
+        
+        <!-- Book Now Button (visible by default) -->
+        <button onclick="openGroupBooking()" class="btn-primary" style="display:block;width:100%;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;border:none;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:1.5rem;" id="group-book-btn">Book Now →</button>
 
-        <!-- Kid counter + Level selector widget -->
-        <div id="booking-step-1" class="booking-step">
-          <div class="kid-counter">
-            <div class="kid-counter-label">How many kids?</div>
-            <div class="kid-counter-controls">
-              <button class="kc-btn" onclick="changeKids(-1)">−</button>
-              <span class="kc-count" id="kc-count">1</span>
-              <button class="kc-btn" onclick="changeKids(1)">+</button>
-            </div>
-            <div class="kc-total">Total: <strong id="kc-total">$35</strong><span id="kc-savings" style="color:var(--green);font-size:0.8rem;font-weight:800;margin-left:0.4rem;"></span></div>
+        <!-- Booking UI (hidden by default) -->
+        <div id="group-booking" style="display:none;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06);">
+          
+          <!-- Kid Counter -->
+          <div style="font-size:0.82rem;font-weight:800;color:var(--silver);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:1rem;">How many kids?</div>
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+            <button class="kc-btn" onclick="groupChangeKids(-1)">−</button>
+            <span style="font-size:1.2rem;font-weight:800;min-width:2rem;text-align:center;" id="group-kid-count">1</span>
+            <button class="kc-btn" onclick="groupChangeKids(1)">+</button>
+            <span style="margin-left:auto;color:var(--green);font-weight:800;font-size:1.1rem;">$<span id="group-kid-price">35</span><span id="group-kid-savings" style="color:var(--gray);font-size:0.8rem;margin-left:0.5rem;"></span></span>
           </div>
 
-          <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.06);">
-            <div style="font-size:0.82rem;font-weight:800;color:var(--silver);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:1rem;">Choose Level</div>
-            <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
-              <button onclick="setLevelAndShowCalendly('beginners')" id="btn-beginners" class="level-btn active">
-                ⭐ Beginners<br><span style="font-size:0.7rem;color:var(--gray);">Mon/Wed/Fri 5:30–6:45 PM</span>
-              </button>
-              <button onclick="setLevelAndShowCalendly('experienced')" id="btn-experienced" class="level-btn">
-                🔥 Experienced<br><span style="font-size:0.7rem;color:var(--gray);">Tue/Thu</span>
-              </button>
-            </div>
+          <!-- Level Selector -->
+          <div style="font-size:0.82rem;font-weight:800;color:var(--silver);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:1rem;">Choose Level</div>
+          <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+            <button onclick="setGroupLevel('beginners')" id="group-level-beginners" class="level-btn active">⭐ Beginners</button>
+            <button onclick="setGroupLevel('experienced')" id="group-level-experienced" class="level-btn">🔥 Experienced</button>
           </div>
-        </div>
 
-        <!-- Calendly widget + Payment -->
-        <div id="booking-step-2" class="booking-step" style="display:none;">
-          <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Select Your Time — <span id="level-display">Beginners</span></div>
-          
-          <!-- Beginners widget -->
-          <div id="calendly-beginners" style="display:none;">
-            <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:600px;"></div>
+          <!-- Calendly Widgets -->
+          <div id="group-calendly-beginners" style="display:block;">
+            <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:100%;height:500px;"></div>
           </div>
-          
-          <!-- Experienced widget -->
-          <div id="calendly-experienced" style="display:none;">
-            <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/experienced" style="min-width:320px;height:600px;"></div>
+          <div id="group-calendly-experienced" style="display:none;">
+            <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/experienced" style="min-width:100%;height:500px;"></div>
           </div>
-          
-          <!-- Payment button (appears after booking) -->
-          <div id="payment-button-container" style="display:none;margin-top:1rem;">
-            <div style="background:rgba(105,190,40,0.1);border:1px solid var(--green);border-radius:10px;padding:1rem;margin-bottom:1rem;">
-              <div style="color:var(--green);font-weight:800;margin-bottom:0.5rem;">✓ Booking Confirmed!</div>
-              <div style="color:var(--gray);font-size:0.85rem;">Kids: <strong id="confirm-kids">1</strong> · Total: <strong id="confirm-total">$35</strong></div>
-            </div>
-            <a id="stripe-payment-btn" href="#" target="_blank" class="btn-primary" style="display:block;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">💳 Complete Payment →</a>
-            <button onclick="backToLevel()" class="btn-secondary" style="display:block;width:100%;font-size:0.85rem;padding:0.65rem 1.5rem;text-align:center;margin-top:0.6rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">← Change Level</button>
-          </div>
+
         </div>
       </div>
 
+      <!-- PRIVATE CLASSES CARD -->
       <div class="program-card">
         <div class="program-tag gray">1-on-1 & Clinics</div>
         <div class="program-icon">🎯</div>
@@ -865,7 +673,7 @@
           <li>Open to any skill level</li>
           <li>Great complement to group classes</li>
         </ul>
-        <a href="#book" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;">Book Now</a>
+        <a href="#" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;">Book Now</a>
       </div>
 
     </div>
@@ -951,50 +759,6 @@
       </div>
 
     </div>
-  </div>
-</section>
-
-<!-- BOOK -->
-<section id="book">
-  <div class="container">
-    <div class="section-label">Ready to Train?</div>
-    <h2 class="section-title">BOOK A SESSION</h2>
-    <p class="section-sub">Choose your session type below and pick a time that works for you.</p>
-
-    <!-- Tab buttons -->
-    <div class="book-tabs">
-      <button class="book-tab active" onclick="switchTab('private', this)">🎯 Private 1-on-1</button>
-      <button class="book-tab" onclick="switchTab('beginners', this)">⭐ Beginners Group</button>
-      <button class="book-tab" onclick="switchTab('experienced', this)">🔥 Experienced Group</button>
-    </div>
-
-    <!-- Private -->
-    <div id="tab-private" class="tab-panel">
-      <div class="tab-info">
-        <span class="tab-badge">1-on-1 · 60 min · Mon / Wed / Fri · 7–8 PM</span>
-        <p>Fully personalized session. Book directly via Calendly — payment handled through Stripe at booking.</p>
-      </div>
-      <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/private" style="min-width:320px;height:680px;"></div>
-    </div>
-
-    <!-- Beginners -->
-    <div id="tab-beginners" class="tab-panel" style="display:none;">
-      <div class="tab-info">
-        <span class="tab-badge">Group · 1h 15min · Mon / Wed / Fri · 5:30–6:45 PM · Max 16 players</span>
-        <p>For players just getting started. Fun drills, basic technique, small-sided games.</p>
-      </div>
-      <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/beginners" style="min-width:320px;height:680px;"></div>
-    </div>
-
-    <!-- Experienced -->
-    <div id="tab-experienced" class="tab-panel" style="display:none;">
-      <div class="tab-info">
-        <span class="tab-badge">Group · 1h 15min · Tue / Thu · Max 16 players</span>
-        <p>For players with some experience looking to level up their game. Higher intensity, tactical focus.</p>
-      </div>
-      <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/experienced" style="min-width:320px;height:680px;"></div>
-    </div>
-
   </div>
 </section>
 
@@ -1121,180 +885,63 @@
   <div class="footer-logo">Drizzle <span>Ballers</span></div>
   <div class="footer-sub">Seattle Youth Soccer Coaching · Rain or Shine</div>
   <div class="footer-links">
-    <a href="#about">About</a>
-    <a href="#programs">Programs</a>
-    <a href="#schedule">Schedule</a>
-    <a href="#book">Book</a>
-    <a href="#contact">Contact</a>
+    <li><a href="#about">About</a></li>
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#free-session">Free Class</a></li>
   </div>
   <div class="footer-copy">© 2025 Drizzle Ballers · Seattle, WA · Built with ⚽ & ☔</div>
 </footer>
 
 <script>
-// ── BOOKING FLOW ──
-const STRIPE_LINKS = {
-  1: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200',
-  2: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200',
-  3: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200',
-  4: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200',
-  5: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200',
-  6: 'https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200'
-};
-const CALENDLY_LINKS = {
-  beginners: 'https://calendly.com/drizzleballers/beginners',
-  experienced: 'https://calendly.com/drizzleballers/experienced'
-};
-const PRICES  = { 1: 35, 2: 65, 3: 90, 4: 110, 5: 120, 6: 130 };
+// ── GROUP CLASSES BOOKING LOGIC ──
+const PRICES = { 1: 35, 2: 65, 3: 90, 4: 110, 5: 120, 6: 130 };
 const SAVINGS = { 1: 0,  2: 5,  3: 15, 4: 30,  5: 55,  6: 70  };
 
-let kidCount = parseInt(localStorage.getItem('drizzle_kids')) || 1;
-let levelSelected = localStorage.getItem('drizzle_level') || 'beginners';
+let groupKidCount = 1;
+let groupLevel = 'beginners';
 
-function changeKids(delta) {
-  kidCount = Math.min(6, Math.max(1, kidCount + delta));
-  localStorage.setItem('drizzle_kids', kidCount);
-  updateKidDisplay();
+// Open booking UI
+function openGroupBooking() {
+  document.getElementById('group-book-btn').style.display = 'none';
+  document.getElementById('group-booking').style.display = 'block';
+  updateGroupDisplay();
+  // Init Calendly widget
+  if (window.Calendly) {
+    setTimeout(() => window.Calendly.initInlineWidgets(), 100);
+  }
 }
 
-function updateKidDisplay() {
-  document.getElementById('kc-count').textContent = kidCount;
-  document.getElementById('kc-total').textContent = `$${PRICES[kidCount]}`;
-  const savings = SAVINGS[kidCount] > 0 ? ` · save $${SAVINGS[kidCount]}` : '';
-  document.getElementById('kc-savings').textContent = savings;
-  document.querySelectorAll('.kc-btn')[0].disabled = kidCount === 1;
-  document.querySelectorAll('.kc-btn')[1].disabled = kidCount === 6;
+// Change kid count
+function groupChangeKids(delta) {
+  groupKidCount = Math.min(6, Math.max(1, groupKidCount + delta));
+  updateGroupDisplay();
 }
 
-function setLevel(level) {
-  levelSelected = level;
-  localStorage.setItem('drizzle_level', level);
-  document.getElementById('btn-beginners').classList.toggle('active', level === 'beginners');
-  document.getElementById('btn-experienced').classList.toggle('active', level === 'experienced');
+// Set level
+function setGroupLevel(level) {
+  groupLevel = level;
+  document.getElementById('group-level-beginners').classList.toggle('active', level === 'beginners');
+  document.getElementById('group-level-experienced').classList.toggle('active', level === 'experienced');
+  
+  document.getElementById('group-calendly-beginners').style.display = level === 'beginners' ? 'block' : 'none';
+  document.getElementById('group-calendly-experienced').style.display = level === 'experienced' ? 'block' : 'none';
+  
+  if (window.Calendly) {
+    setTimeout(() => window.Calendly.initInlineWidgets(), 100);
+  }
 }
 
-function setLevelAndShowCalendly(level) {
-  levelSelected = level;
-  localStorage.setItem('drizzle_level', level);
-  document.getElementById('btn-beginners').classList.toggle('active', level === 'beginners');
-  document.getElementById('btn-experienced').classList.toggle('active', level === 'experienced');
-  
-  // Hide payment button until booking confirmed
-  document.getElementById('payment-button-container').style.display = 'none';
-  
-  // Show Calendly step
-  document.getElementById("booking-step-1").style.display = "none";
-  document.getElementById("booking-step-2").style.display = "block";
-  
-  // Update level label
-  const levelLabel = level === 'beginners' ? 'Beginners' : 'Experienced';
-  document.getElementById('level-display').textContent = levelLabel;
-  
-  // Show/hide correct widget
-  document.getElementById('calendly-beginners').style.display = level === 'beginners' ? 'block' : 'none';
-  document.getElementById('calendly-experienced').style.display = level === 'experienced' ? 'block' : 'none';
-  
-  // Set up booking detection
-  detectBookingConfirmation();
+// Update price display
+function updateGroupDisplay() {
+  document.getElementById('group-kid-count').textContent = groupKidCount;
+  document.getElementById('group-kid-price').textContent = PRICES[groupKidCount];
+  const savings = SAVINGS[groupKidCount] > 0 ? ` (save $${SAVINGS[groupKidCount]})` : '';
+  document.getElementById('group-kid-savings').textContent = savings;
 }
 
-function detectBookingConfirmation() {
-  // Listen for Calendly's postMessage when event is scheduled
-  window.addEventListener('message', function onCalendlyEvent(e) {
-    if (e.data.event === 'calendly.event_scheduled') {
-      // Booking confirmed! Show payment button
-      showPaymentButton();
-      // Remove listener to avoid duplicate triggers
-      window.removeEventListener('message', onCalendlyEvent);
-    }
-  });
-}
-
-function showPaymentButton() {
-  // Hide Calendly widgets
-  document.getElementById('calendly-beginners').style.display = 'none';
-  document.getElementById('calendly-experienced').style.display = 'none';
-  
-  // Show payment button with summary
-  document.getElementById('confirm-kids').textContent = kidCount === 1 ? '1' : kidCount;
-  document.getElementById('confirm-total').textContent = '$' + PRICES[kidCount];
-  
-  // Create payment link that also tracks the booking
-  const stripeLink = STRIPE_LINKS[kidCount];
-  const trackingLink = stripeLink + (stripeLink.includes('?') ? '&' : '?') + 'session_id=' + Date.now();
-  document.getElementById('stripe-payment-btn').href = trackingLink;
-  
-  // Store pending booking
-  const pendingBooking = {
-    level: levelSelected,
-    kids: kidCount,
-    total: PRICES[kidCount],
-    timestamp: new Date().toISOString(),
-    status: 'pending_payment'
-  };
-  
-  // Save to localStorage
-  let bookings = JSON.parse(localStorage.getItem('drizzle_bookings') || '[]');
-  bookings.push(pendingBooking);
-  localStorage.setItem('drizzle_bookings', JSON.stringify(bookings));
-  
-  document.getElementById('payment-button-container').style.display = 'block';
-}
-
-function backToLevel() {
-  document.getElementById("booking-step-1").style.display = "block";
-  document.getElementById("booking-step-2").style.display = "none";
-  document.getElementById('payment-button-container').style.display = 'none';
-}
-
-
-// init
-updateKidDisplay();
-// Initialize with saved level
-if (levelSelected === 'experienced') {
-  document.getElementById('btn-beginners').classList.remove('active');
-  document.getElementById('btn-experienced').classList.add('active');
-} else {
-  document.getElementById('btn-beginners').classList.add('active');
-  document.getElementById('btn-experienced').classList.remove('active');
-}
-
-
-document.querySelectorAll('.program-card').forEach(card => {
-  card.style.cursor = 'pointer';
-  const btn = card.querySelector('a');
-
-  card.addEventListener('mouseenter', () => {
-    document.querySelectorAll('.program-card').forEach(c => {
-      c.classList.remove('featured');
-      c.querySelector('.program-tag').classList.add('gray');
-      const b = c.querySelector('a');
-      b.className = 'btn-secondary';
-      b.style.cssText = 'display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;';
-    });
-    card.classList.add('featured');
-    card.querySelector('.program-tag').classList.remove('gray');
-    btn.className = 'btn-primary';
-    btn.style.cssText = 'display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;';
-  });
-});
-
-
-const LINKS = {
-  private:    'https://calendly.com/drizzleballers/private',
-  beginners:  'https://calendly.com/drizzleballers/beginners',
-  experienced:'https://calendly.com/drizzleballers/experienced',
-  freePass:   'https://calendly.com/drizzleballers/free-pass'
-};
-
-// ── TAB SWITCHING ──
-function switchTab(tab, btn) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
-  document.querySelectorAll('.book-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + tab).style.display = 'block';
-  btn.classList.add('active');
-}
-
-// ── FREE SESSION CLAIM ──
+// ── FREE SESSION ──
 function normalizePhone(raw) {
   return raw.replace(/\D/g, '');
 }
@@ -1318,7 +965,7 @@ function claimFreeSession(e) {
 
   if (duplicate) {
     msg.className = 'error';
-    msg.textContent = `⚠️ This number already claimed a free class on ${duplicate.date}. One per family!`;
+    msg.textContent = `⚠️ This number already claimed a free class. One per family!`;
     return;
   }
 
@@ -1326,7 +973,7 @@ function claimFreeSession(e) {
     id: Date.now(),
     name, kid, age,
     phone: document.getElementById('fs-phone').value.trim(),
-    date: new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }),
+    date: new Date().toLocaleDateString('en-US'),
     timestamp: new Date().toISOString(),
     status: 'pending'
   };
@@ -1334,21 +981,15 @@ function claimFreeSession(e) {
   existing.push(record);
   localStorage.setItem('db_free_sessions', JSON.stringify(existing));
 
-  // show success + Calendly link
   msg.className = 'success';
-  msg.innerHTML = `✅ You're on the list, <strong>${name}</strong>! We'll text you at ${document.getElementById('fs-phone').value.trim()} to confirm your spot. You can also book directly below:
-    <a href="${LINKS.freePass}" target="_blank"
-       style="display:block;margin-top:1rem;background:var(--green);color:var(--navy);
-              font-weight:900;padding:0.85rem 1.5rem;border-radius:6px;text-decoration:none;
-              text-align:center;font-size:1rem;letter-spacing:1px;">
-      📅 Book My Free Class →
-    </a>`;
+  msg.textContent = `✅ Got it, ${name}! We'll text you at ${document.getElementById('fs-phone').value.trim()} to confirm.`;
+  
   const submitBtn = e.target.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
   submitBtn.textContent = '🎉 Claimed!';
 }
 
-
+// ── RAIN ANIMATION ──
 const rain = document.getElementById('rain');
 for (let i = 0; i < 40; i++) {
   const drop = document.createElement('div');
@@ -1360,7 +1001,7 @@ for (let i = 0; i < 40; i++) {
   rain.appendChild(drop);
 }
 
-// Form submit
+// ── FORM SUBMIT ──
 function handleSubmit(e) {
   e.preventDefault();
   const btn = e.target.querySelector('button[type="submit"]');
@@ -1373,7 +1014,7 @@ function handleSubmit(e) {
   }, 3000);
 }
 
-// Scroll animations
+// ── SCROLL ANIMATIONS ──
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(el => {
     if (el.isIntersecting) {
@@ -1383,11 +1024,49 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 
-document.querySelectorAll('.program-card, .pricing-card, .schedule-day, .stat-chip').forEach(el => {
+document.querySelectorAll('.program-card, .schedule-day, .stat-chip').forEach(el => {
   el.style.opacity = '0';
   el.style.transform = 'translateY(20px)';
   el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
   observer.observe(el);
+});
+
+// ── CARD HOVER EFFECT ──
+document.querySelectorAll('.program-card').forEach(card => {
+  const btn = card.querySelector('button, a[class*="btn"]');
+  const title = card.querySelector('.program-name');
+  const priceContainer = card.querySelector('[style*="font-family"]');
+  
+  card.addEventListener('mouseenter', () => {
+    document.querySelectorAll('.program-card').forEach(c => {
+      c.style.opacity = '0.4';
+      const otherBtn = c.querySelector('button, a[class*="btn"]');
+      const otherTitle = c.querySelector('.program-name');
+      const otherPrice = c.querySelector('[style*="font-family"]');
+      
+      if (otherBtn) otherBtn.style.opacity = '0.5';
+      if (otherTitle) otherTitle.style.opacity = '0.5';
+      if (otherPrice) otherPrice.style.opacity = '0.5';
+    });
+    
+    card.style.opacity = '1';
+    if (btn) btn.style.opacity = '1';
+    if (title) title.style.opacity = '1';
+    if (priceContainer) priceContainer.style.opacity = '1';
+  });
+  
+  card.addEventListener('mouseleave', () => {
+    document.querySelectorAll('.program-card').forEach(c => {
+      c.style.opacity = '1';
+      const allBtn = c.querySelector('button, a[class*="btn"]');
+      const allTitle = c.querySelector('.program-name');
+      const allPrice = c.querySelector('[style*="font-family"]');
+      
+      if (allBtn) allBtn.style.opacity = '1';
+      if (allTitle) allTitle.style.opacity = '1';
+      if (allPrice) allPrice.style.opacity = '1';
+    });
+  });
 });
 </script>
 <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>

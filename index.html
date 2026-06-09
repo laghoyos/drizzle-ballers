@@ -876,7 +876,9 @@
 
         <div id="private-booking-step" class="booking-step" style="display:none;">
           <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Select Your Time — Private Session</div>
-          <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/private" style="min-width:320px;height:600px;"></div>
+          <div id="calendly-private">
+            <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/private" style="min-width:320px;height:600px;"></div>
+          </div>
 
           <div id="private-payment-container" style="display:none;margin-top:1rem;">
             <div style="background:rgba(105,190,40,0.1);border:1px solid var(--green);border-radius:10px;padding:1rem;margin-bottom:1rem;">
@@ -1279,6 +1281,7 @@ function resetPrivateBooking() {
 }
 
 function showPrivatePaymentButton() {
+  document.getElementById('calendly-private').style.display = 'none';
   document.getElementById('private-payment-container').style.display = 'block';
 
   const bookingData = new FormData();
@@ -1333,7 +1336,9 @@ document.querySelectorAll('.program-card').forEach(card => {
     if (activePrice) activePrice.style.color = 'var(--green)';
   });
 
-  if (card !== groupCard) {
+  if (card === groupCard) {
+    card.addEventListener('click', resetPrivateBooking);
+  } else {
     card.addEventListener('click', resetGroupBooking);
   }
 });

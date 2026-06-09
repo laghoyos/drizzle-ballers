@@ -870,7 +870,23 @@
           <li>Open to any skill level</li>
           <li>Great complement to group classes</li>
         </ul>
-        <a href="#book" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;">Book Now</a>
+        <div id="private-book-btn-container">
+          <button onclick="showPrivateBooking()" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Book Now</button>
+        </div>
+
+        <div id="private-booking-step" class="booking-step" style="display:none;">
+          <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Select Your Time — Private Session</div>
+          <div class="calendly-inline-widget" data-url="https://calendly.com/drizzleballers/private" style="min-width:320px;height:600px;"></div>
+
+          <div id="private-payment-container" style="display:none;margin-top:1rem;">
+            <div style="background:rgba(105,190,40,0.1);border:1px solid var(--green);border-radius:10px;padding:1rem;margin-bottom:1rem;">
+              <div style="color:var(--green);font-weight:800;margin-bottom:0.5rem;">✓ Booking Confirmed!</div>
+              <div style="color:var(--gray);font-size:0.85rem;">Private Session · <strong style="color:var(--white);">$75</strong></div>
+            </div>
+            <a id="stripe-private-btn" href="https://buy.stripe.com/test_5kQfZgbnT2OQfwQ6I98N200" target="_blank" class="btn-primary" style="display:block;font-size:0.9rem;padding:0.85rem 1.5rem;text-align:center;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">💳 Complete Payment →</a>
+            <button onclick="resetPrivateBooking()" class="btn-secondary" style="display:block;width:100%;font-size:0.85rem;padding:0.65rem 1.5rem;text-align:center;margin-top:0.6rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">← Change Time</button>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -1177,21 +1193,19 @@ function setLevelAndShowCalendly(level) {
   document.getElementById('calendly-beginners').style.display = level === 'beginners' ? 'block' : 'none';
   document.getElementById('calendly-experienced').style.display = level === 'experienced' ? 'block' : 'none';
   
-  // Set up booking detection
-  detectBookingConfirmation();
 }
 
-function detectBookingConfirmation() {
-  // Listen for Calendly's postMessage when event is scheduled
-  window.addEventListener('message', function onCalendlyEvent(e) {
-    if (e.data.event === 'calendly.event_scheduled') {
-      // Booking confirmed! Show payment button
-      showPaymentButton();
-      // Remove listener to avoid duplicate triggers
-      window.removeEventListener('message', onCalendlyEvent);
-    }
-  });
-}
+// Single global handler — routes to whichever booking flow is active
+window.addEventListener('message', function(e) {
+  if (e.data.event !== 'calendly.event_scheduled') return;
+  if (document.getElementById('booking-step-2').style.display !== 'none' &&
+      document.getElementById('payment-button-container').style.display === 'none') {
+    showPaymentButton();
+  } else if (document.getElementById('private-booking-step').style.display !== 'none' &&
+             document.getElementById('private-payment-container').style.display === 'none') {
+    showPrivatePaymentButton();
+  }
+});
 
 function showPaymentButton() {
   // Hide Calendly widgets
@@ -1240,6 +1254,7 @@ function backToLevel() {
 }
 
 function showGroupBooking() {
+  resetPrivateBooking();
   document.getElementById('group-book-btn-container').style.display = 'none';
   document.getElementById('booking-step-1').style.display = 'block';
 }
@@ -1249,6 +1264,36 @@ function resetGroupBooking() {
   document.getElementById('booking-step-1').style.display = 'none';
   document.getElementById('booking-step-2').style.display = 'none';
   document.getElementById('payment-button-container').style.display = 'none';
+}
+
+function showPrivateBooking() {
+  resetGroupBooking();
+  document.getElementById('private-book-btn-container').style.display = 'none';
+  document.getElementById('private-booking-step').style.display = 'block';
+}
+
+function resetPrivateBooking() {
+  document.getElementById('private-book-btn-container').style.display = 'block';
+  document.getElementById('private-booking-step').style.display = 'none';
+  document.getElementById('private-payment-container').style.display = 'none';
+}
+
+function showPrivatePaymentButton() {
+  document.getElementById('private-payment-container').style.display = 'block';
+
+  const bookingData = new FormData();
+  bookingData.append('type', 'Private Session');
+  bookingData.append('total', '$75');
+  bookingData.append('status', 'pending_payment');
+  fetch(`https://formspree.io/f/${FORMSPREE_BOOKING}`, {
+    method: 'POST',
+    body: bookingData,
+    headers: { 'Accept': 'application/json' }
+  }).catch(err => console.error('Private booking record error:', err));
+
+  let bookings = JSON.parse(localStorage.getItem('drizzle_bookings') || '[]');
+  bookings.push({ type: 'private', total: 75, timestamp: new Date().toISOString(), status: 'pending_payment' });
+  localStorage.setItem('drizzle_bookings', JSON.stringify(bookings));
 }
 
 

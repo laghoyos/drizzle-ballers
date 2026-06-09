@@ -786,7 +786,7 @@
         <div class="program-icon">👥</div>
         <div class="program-name">Group Classes</div>
         <div style="display:flex;align-items:baseline;gap:0.3rem;margin-bottom:0.8rem;">
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--green);line-height:1;">$35</span>
+          <span class="program-price" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--green);line-height:1;">$35</span>
           <span style="color:var(--gray);font-size:0.85rem;">/ class · 1h 15min</span>
         </div>
         <p class="program-desc">High-energy group sessions that build teamwork, game IQ, and individual skills. Beginners and experienced groups available.</p>
@@ -859,7 +859,7 @@
         <div class="program-icon">🎯</div>
         <div class="program-name">Private & Skill Sessions</div>
         <div style="display:flex;align-items:baseline;gap:0.3rem;margin-bottom:0.8rem;">
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--silver);line-height:1;">$75</span>
+          <span class="program-price" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--silver);line-height:1;">$75</span>
           <span style="color:var(--gray);font-size:0.85rem;">/ session · 60 min</span>
         </div>
         <p class="program-desc">Personalized 1-on-1 training for rapid individual improvement, plus themed skill clinics targeting dribbling, finishing, first touch, and more.</p>
@@ -1104,11 +1104,15 @@ document.querySelectorAll('.program-card').forEach(card => {
       const b = c.querySelector('a, button');
       b.className = 'btn-secondary';
       b.style.cssText = 'display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;';
+      const p = c.querySelector('.program-price');
+      if (p) p.style.color = 'var(--silver)';
     });
     card.classList.add('featured');
     card.querySelector('.program-tag').classList.remove('gray');
     btn.className = 'btn-primary';
     btn.style.cssText = 'display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;';
+    const activePrice = card.querySelector('.program-price');
+    if (activePrice) activePrice.style.color = 'var(--green)';
   });
 });
 
@@ -1273,11 +1277,15 @@ document.querySelectorAll('.program-card').forEach(card => {
       const b = c.querySelector('a, button');
       b.className = 'btn-secondary';
       b.style.cssText = 'display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;border:none;cursor:pointer;font-family:"Nunito",sans-serif;';
+      const p = c.querySelector('.program-price');
+      if (p) p.style.color = 'var(--silver)';
     });
     card.classList.add('featured');
     card.querySelector('.program-tag').classList.remove('gray');
     btn.className = 'btn-primary';
     btn.style.cssText = 'display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;border:none;cursor:pointer;font-family:"Nunito",sans-serif;';
+    const activePrice = card.querySelector('.program-price');
+    if (activePrice) activePrice.style.color = 'var(--green)';
   });
 
   if (card !== groupCard) {

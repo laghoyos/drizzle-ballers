@@ -698,13 +698,106 @@
   .footer-links a:hover { color: var(--green); }
   .footer-copy { color: var(--gray); font-size: 0.75rem; margin-top: 1rem; }
 
-  /* ── RESPONSIVE ── */
+  /* ── HAMBURGER ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem;
+    z-index: 101;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  #mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--navy);
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+  #mobile-menu.open { display: flex; }
+  #mobile-menu a {
+    color: var(--white);
+    text-decoration: none;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    letter-spacing: 3px;
+    transition: color 0.2s;
+  }
+  #mobile-menu a:hover { color: var(--green); }
+  #mobile-menu .mobile-cta {
+    font-size: 1.2rem;
+    background: var(--green);
+    color: var(--navy) !important;
+    padding: 0.7rem 2rem;
+    border-radius: 6px;
+    letter-spacing: 2px;
+  }
+
+  /* ── TABLET ── */
+  @media (max-width: 1024px) {
+    .about-grid { gap: 2rem; }
+    .about-ball { max-width: 260px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  }
+
+  /* ── MOBILE ── */
   @media (max-width: 768px) {
     nav { padding: 1rem 1.2rem; }
     .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+
+    section { padding: 4rem 1.2rem; }
+    #hero { min-height: 100svh; }
+
     .about-grid, .contact-grid { grid-template-columns: 1fr; }
     .about-visual { order: -1; }
-    .about-ball { max-width: 200px; }
+    .about-ball { max-width: 180px; }
+    .about-stat-strip { gap: 0.8rem; }
+    .stat-chip { padding: 0.8rem 1rem; }
+
+    .programs-grid { grid-template-columns: 1fr; }
+    .schedule-grid { grid-template-columns: repeat(2, 1fr); }
+    .pricing-grid { grid-template-columns: 1fr; }
+
+    .hero-btns { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-secondary { width: 100%; max-width: 320px; text-align: center; }
+
+    .kid-counter { flex-direction: column; align-items: flex-start; }
+    .kc-total { width: 100%; }
+
+    .free-form { padding: 1.4rem; }
+    .free-session-inner { padding: 0 0.5rem; }
+
+    .calendly-inline-widget { min-width: unset !important; width: 100% !important; }
+
+    .footer-links { gap: 1.2rem; }
+  }
+
+  /* ── SMALL PHONES ── */
+  @media (max-width: 480px) {
+    .schedule-grid { grid-template-columns: 1fr; }
+    .hero-badge { font-size: 0.65rem; letter-spacing: 2px; }
+    .section-title { letter-spacing: 1px; }
+    .pricing-card.popular { margin-top: 1rem; }
   }
 </style>
 </head>
@@ -720,7 +813,18 @@
     <li><a href="#free-session" class="nav-cta">🎁 Free Class</a></li>
     <li><a href="#programs" class="nav-cta" style="background:transparent;border:1px solid var(--green);color:var(--green)!important;">Book Now</a></li>
   </ul>
+  <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div id="mobile-menu">
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#programs" onclick="toggleMenu()">Programs</a>
+  <a href="#schedule" onclick="toggleMenu()">Schedule</a>
+  <a href="#free-session" onclick="toggleMenu()" class="mobile-cta">🎁 Free Class</a>
+  <a href="#programs" onclick="toggleMenu()" class="mobile-cta" style="background:transparent;border:2px solid var(--green);color:var(--green)!important;">Book Now</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -1436,6 +1540,14 @@ function claimFreeSession(e) {
     });
 }
 
+
+function toggleMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const btn  = document.querySelector('.nav-hamburger');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
 
 const rain = document.getElementById('rain');
 for (let i = 0; i < 40; i++) {

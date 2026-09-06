@@ -109,31 +109,15 @@
           <button onclick="showGroupBooking()" class="btn-secondary" style="display:inline-block;font-size:0.85rem;padding:0.7rem 1.5rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">Book Now</button>
         </div>
 
-        <!-- Age group selector -->
+        <!-- Age group selector — opens the matching Calendly event in a new tab -->
         <div id="booking-step-1" class="booking-step" style="display:none;">
           <div style="font-size:0.82rem;font-weight:800;color:var(--silver);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:1rem;">Choose Age Group</div>
           <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
-            <button onclick="setAgeGroupAndShowCalendly('u5')" id="btn-u5" class="level-btn active">🌱 Under 5</button>
-            <button onclick="setAgeGroupAndShowCalendly('6-7')" id="btn-6-7" class="level-btn">⚡ 6–7</button>
-            <button onclick="setAgeGroupAndShowCalendly('8-9')" id="btn-8-9" class="level-btn">🔥 8–9</button>
+            <button onclick="openAgeGroupBooking('u5')" id="btn-u5" class="level-btn active">🌱 Under 5</button>
+            <button onclick="openAgeGroupBooking('6-7')" id="btn-6-7" class="level-btn">⚡ 6–7</button>
+            <button onclick="openAgeGroupBooking('8-9')" id="btn-8-9" class="level-btn">🔥 8–9</button>
           </div>
-        </div>
-
-        <!-- Calendly widget (price + payment collected by Calendly/Stripe before the slot confirms) -->
-        <div id="booking-step-2" class="booking-step" style="display:none;">
-          <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;font-weight:800;">Select Your Time — <span id="level-display">Under 5</span></div>
-
-          <div id="calendly-group-widget" style="min-width:320px;height:600px;"></div>
-
-          <!-- Confirmation (shown once Calendly reports the event — and payment — is complete) -->
-          <div id="group-confirmed" style="display:none;margin-top:1rem;">
-            <div style="background:rgba(105,190,40,0.1);border:1px solid var(--green);border-radius:10px;padding:1rem;margin-bottom:1rem;">
-              <div style="color:var(--green);font-weight:800;margin-bottom:0.5rem;">✓ Booked & Paid!</div>
-              <div style="color:var(--gray);font-size:0.85rem;">Total: <strong id="confirm-total">$35</strong></div>
-              <div style="color:var(--gray);font-size:0.8rem;margin-top:0.5rem;">A confirmation email is on its way from Calendly. See you on the field! ⚽</div>
-            </div>
-            <button onclick="backToLevel()" class="btn-secondary" style="display:block;width:100%;font-size:0.85rem;padding:0.65rem 1.5rem;text-align:center;border:none;cursor:pointer;font-family:'Nunito',sans-serif;">← Book Another</button>
-          </div>
+          <p style="font-size:0.8rem;color:var(--gray);margin-top:1rem;">Opens Calendly in a new tab to pick your time and pay.</p>
         </div>
       </div>
 

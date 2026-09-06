@@ -35,13 +35,20 @@ Note: the Calendly account's default "Working hours" availability schedule is co
 These tools can list/read event types and availability but still cannot create/edit payment-enabled event types or read prices (payment config is UI-only in Calendly, confirmed unsupported twice now). Always confirm price with the user rather than assuming.
 
 ## Files
-- **`index.html`** — main site. Has `CALENDLY_EVENTS` config object (currently still `beginners`/`experienced` × kid-count, stale — needs the age-group refactor), `PRICES`/`SAVINGS` per kid-count, Calendly inline widget embed (`Calendly.initInlineWidget`), a `postMessage` listener for `calendly.event_scheduled` (has an origin check: `e.origin !== 'https://calendly.com'`) that shows a "Booked & Paid" confirmation. No client-side payment step — Calendly handles it.
+- **`index.html`** — main site markup only; styling and behavior were split out (2026-09-06) into `styles.css` and `script.js`, linked normally (`<link rel="stylesheet">` / `<script src>`). Don't re-inline them.
+- **`styles.css`** — all page CSS, moved verbatim out of the old inline `<style>` block.
+- **`script.js`** — all page behavior. Key pieces:
+  - `CALENDLY_EVENTS` — flat map of the 3 paid age-group event URLs (`u5`/`6-7`/`8-9`).
+  - **Group class booking** (`openAgeGroupBooking()`): clicking an age group opens that Calendly event in a **new tab** (`window.open(..., '_blank', 'noopener')`) rather than an embedded widget. There is no in-page "Booked & Paid" confirmation or booking-notification email for this flow anymore — this page can't observe what happens in a separate tab, so Calendly + Stripe's own dashboards are the only record (matches what `admin.html` already assumes).
+  - **Free class claim** (`claimFreeSession()`): different pattern on purpose — after a successful claim, the matching free-pass Calendly event renders as an **inline embedded widget** (`Calendly.initInlineWidget`) right on the page, so the parent never leaves. This is intentional per user request ("don't want the user to go to another window"), not an oversight — don't "fix" it to match the group-booking new-tab pattern.
+  - Why the two flows differ: **Apple Pay / Google Pay only appear at Calendly checkout on a direct link, not inside an embedded/inline widget** (confirmed via Calendly's own help/community docs, June 2025 wallet-payment rollout). The free class pass is $0 (no payment step), so embedding it inline has no wallet-payment downside — but the paid group-class events need the new-tab/direct-link treatment for wallet payments to actually show up. If asked to "add Apple Pay/Google Pay," the fix is almost always on the **Stripe dashboard** side (Settings → Payment methods) — there's no Calendly API/MCP surface for this at all, and no Stripe MCP is connected in this project.
 - **`admin.html`** — password-gated (`ADMIN_PASSWORD = 'drizzle2025'`, hardcoded — flagged as insecure but not fixed, low priority since it's just an admin convenience page). "Paid Bookings" stats/table were removed and replaced with links to the real Calendly dashboard (`https://calendly.com/app/scheduled_events`) and Stripe dashboard (`https://dashboard.stripe.com/payments`). The separate **free-session-claim tracker** (`localStorage` key `db_free_sessions`, its own table/CSV export/status update) is untouched and out of scope — it has a known device-local duplicate-check limitation, not yet addressed.
-- **`success.html`** — deleted (`git rm`); nothing redirects there anymore since Calendly's own inline confirmation now closes the loop.
+- **`success.html`** — deleted (`git rm`); nothing redirects there anymore since Calendly's own confirmation (widget or new tab) now closes the loop.
 
 ## Known accepted limitations (not bugs to "fix" reflexively)
 - `admin.html` password is client-side/hardcoded — acceptable for now, it's just a convenience gate, not real auth.
-- Free-session-claim dedup is per-device localStorage — a real fix would need a backend; out of scope unless the user raises it again.
+- Free-session-claim dedup is per-device localStorage, easily bypassed cross-device — accepted as-is; user explicitly said this is defensive-only and not worth a backend unless real abuse shows up.
+- No in-page confirmation for the paid group-class booking flow (new-tab, can't observe completion) — intentional tradeoff for wallet-payment support, not a gap to fill.
 
 ## Working style notes for this project
 - User makes architecture decisions via short direct replies ("lets go for option a") — don't over-explain before asking, use `AskUserQuestion` for concrete forks (e.g. pricing-model choice) rather than assuming.

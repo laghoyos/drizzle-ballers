@@ -32,7 +32,6 @@ const CALENDLY_EVENTS = {
   '8-9': 'https://calendly.com/drizzleballers/age-group-8-9'
 };
 const AGE_GROUP_LABELS = { 'u5': 'Under 5', '6-7': '6–7', '8-9': '8–9' };
-const PRICE = 35;
 
 // Calendly's widget.js loads async — wait for it before calling its API.
 function withCalendly(cb) {
@@ -42,65 +41,15 @@ function withCalendly(cb) {
 
 let ageGroupSelected = localStorage.getItem('drizzle_age_group') || 'u5';
 
-function setAgeGroupAndShowCalendly(group) {
+// Opens the age group's Calendly event in a new tab — a direct link (not an
+// embedded widget) is required for Apple Pay/Google Pay to show at checkout.
+function openAgeGroupBooking(group) {
   ageGroupSelected = group;
   localStorage.setItem('drizzle_age_group', group);
   ['u5', '6-7', '8-9'].forEach(g => {
     document.getElementById('btn-' + g).classList.toggle('active', g === group);
   });
-
-  document.getElementById('group-confirmed').style.display = 'none';
-
-  // Show Calendly step (keep age group selector visible above)
-  document.getElementById("booking-step-2").style.display = "block";
-
-  // Update age group label
-  document.getElementById('level-display').textContent = AGE_GROUP_LABELS[group];
-
-  renderGroupWidget();
-}
-
-function renderGroupWidget() {
-  const container = document.getElementById('calendly-group-widget');
-  container.innerHTML = '';
-  container.style.display = 'block';
-  document.getElementById('group-confirmed').style.display = 'none';
-  withCalendly(() => Calendly.initInlineWidget({
-    url: CALENDLY_EVENTS[ageGroupSelected],
-    parentElement: container
-  }));
-}
-
-// Single global handler — routes to whichever booking flow is active.
-// Calendly only fires this once the whole flow (including any payment step) completes.
-window.addEventListener('message', function(e) {
-  if (e.origin !== 'https://calendly.com' || e.data.event !== 'calendly.event_scheduled') return;
-  if (document.getElementById('booking-step-2').style.display !== 'none' &&
-      document.getElementById('group-confirmed').style.display === 'none') {
-    showGroupConfirmed();
-  }
-});
-
-function showGroupConfirmed() {
-  document.getElementById('calendly-group-widget').style.display = 'none';
-  document.getElementById('confirm-total').textContent = '$' + PRICE;
-  document.getElementById('group-confirmed').style.display = 'block';
-
-  // Optional email notification only — Calendly + Stripe are the actual record of the booking/payment.
-  const bookingData = new FormData();
-  bookingData.append('age_group', AGE_GROUP_LABELS[ageGroupSelected]);
-  bookingData.append('total', '$' + PRICE);
-  bookingData.append('status', 'booked_and_paid');
-  fetch(`https://formspree.io/f/${FORMSPREE_BOOKING}`, {
-    method: 'POST',
-    body: bookingData,
-    headers: { 'Accept': 'application/json' }
-  }).catch(err => console.error('Booking notification error:', err));
-}
-
-function backToLevel() {
-  document.getElementById("booking-step-2").style.display = "none";
-  document.getElementById('group-confirmed').style.display = 'none';
+  window.open(CALENDLY_EVENTS[group], '_blank', 'noopener');
 }
 
 function showGroupBooking() {
@@ -111,8 +60,6 @@ function showGroupBooking() {
 function resetGroupBooking() {
   document.getElementById('group-book-btn-container').style.display = 'block';
   document.getElementById('booking-step-1').style.display = 'none';
-  document.getElementById('booking-step-2').style.display = 'none';
-  document.getElementById('group-confirmed').style.display = 'none';
 }
 
 
@@ -231,7 +178,6 @@ for (let i = 0; i < 40; i++) {
 // ── FORMSPREE IDs — replace with your own from formspree.io/forms ──
 const FORMSPREE_CONTACT     = 'xwvjvgqo';
 const FORMSPREE_FREE_SESSION = 'mykakrpa';
-const FORMSPREE_BOOKING     = 'meeweyzy';
 
 // Form submit
 function handleSubmit(e) {

@@ -315,24 +315,12 @@
   </header>
 
   <main>
-    <!-- PAID BOOKINGS STATS -->
+    <!-- PAID BOOKINGS NOTE — Calendly + Stripe are now the system of record for paid bookings -->
     <div class="stats-bar">
-      <div style="flex:1;">
-        <div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;font-weight:800;">Paid Bookings</div>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-          <div class="stat-card">
-            <div class="stat-num" id="b-beginners">0</div>
-            <div class="stat-label">Beginners</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-num" id="b-experienced">0</div>
-            <div class="stat-label">Experienced</div>
-          </div>
-          <div class="stat-card green">
-            <div class="stat-num" id="b-total">0</div>
-            <div class="stat-label">Total Paid</div>
-          </div>
-        </div>
+      <div style="flex:1;font-size:0.85rem;color:var(--gray);line-height:1.6;">
+        Paid group &amp; private bookings are booked and paid inside Calendly, so they live in
+        <a href="https://calendly.com/app/scheduled_events" target="_blank" style="color:var(--green);">your Calendly dashboard</a>
+        and <a href="https://dashboard.stripe.com/payments" target="_blank" style="color:var(--green);">your Stripe dashboard</a> — not here.
       </div>
     </div>
 
@@ -364,28 +352,6 @@
       <button class="filter-btn" onclick="setFilter('completed', this)">Completed</button>
       <button class="filter-btn" onclick="setFilter('noshow', this)">No-Shows</button>
       <button class="export-btn" onclick="exportCSV()">⬇ Export CSV</button>
-    </div>
-
-    <!-- PAID BOOKINGS TABLE -->
-    <div style="margin-top:2rem;">
-      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:1px;margin-bottom:1rem;">Paid Bookings</h3>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Level</th>
-              <th>Kids</th>
-              <th>Amount</th>
-              <th>Booked At</th>
-              <th>Paid At</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="paid-bookings-body">
-            <tr><td colspan="6" style="text-align:center;color:var(--gray);">No paid bookings yet</td></tr>
-          </tbody>
-        </table>
-      </div>
     </div>
 
     <!-- FREE CLAIMS TABLE -->
@@ -458,40 +424,6 @@ function renderStats() {
   document.getElementById('s-pending').textContent = data.filter(r => r.status === 'pending').length;
   document.getElementById('s-completed').textContent = data.filter(r => r.status === 'completed').length;
   document.getElementById('s-noshow').textContent = data.filter(r => r.status === 'noshow').length;
-  
-  // Calculate paid bookings
-  const bookings = JSON.parse(localStorage.getItem('drizzle_bookings') || '[]');
-  const beginnerCount = bookings.filter(b => b.level === 'beginners').length;
-  const experiencedCount = bookings.filter(b => b.level === 'experienced').length;
-  const totalPaid = bookings.length;
-  
-  document.getElementById('b-beginners').textContent = beginnerCount;
-  document.getElementById('b-experienced').textContent = experiencedCount;
-  document.getElementById('b-total').textContent = totalPaid;
-  
-  // Render paid bookings table
-  renderPaidBookings();
-}
-
-function renderPaidBookings() {
-  const bookings = JSON.parse(localStorage.getItem('drizzle_bookings') || '[]');
-  const tbody = document.getElementById('paid-bookings-body');
-  
-  if (bookings.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--gray);">No paid bookings yet</td></tr>';
-    return;
-  }
-  
-  tbody.innerHTML = bookings.map(b => `
-    <tr>
-      <td>${b.level === 'beginners' ? '⭐ Beginners' : '🔥 Experienced'}</td>
-      <td><strong>${b.kids}</strong></td>
-      <td style="color:var(--green);font-weight:800;">$${b.total}</td>
-      <td style="font-size:0.85rem;color:var(--gray);">${new Date(b.timestamp).toLocaleDateString()}</td>
-      <td style="font-size:0.85rem;color:var(--gray);">${b.status === 'paid' ? new Date(b.paid_timestamp).toLocaleDateString() : 'Pending'}</td>
-      <td>${b.status === 'paid' ? '✓ Paid' : '⏳ Pending'}</td>
-    </tr>
-  `).join('');
 }
 
 // ── FILTER ──

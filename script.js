@@ -188,14 +188,16 @@ function claimFreeSession(e) {
 
       const freePassUrl = LINKS.freePassByAge[document.getElementById('fs-age').value] || 'https://calendly.com/drizzleballers';
       msg.className = 'success';
-      msg.innerHTML = `✅ You're on the list, <strong>${name}</strong>! We'll text you at ${document.getElementById('fs-phone').value.trim()} to confirm your spot. You can also book directly below:
-        <a href="${freePassUrl}" target="_blank"
-           style="display:block;margin-top:1rem;background:var(--green);color:var(--navy);
-                  font-weight:900;padding:0.85rem 1.5rem;border-radius:6px;text-decoration:none;
-                  text-align:center;font-size:1rem;letter-spacing:1px;">
-          📅 Book My Free Class →
-        </a>`;
+      msg.innerHTML = `✅ You're on the list, <strong>${name}</strong>! We'll text you at ${document.getElementById('fs-phone').value.trim()} to confirm your spot. Pick your time below to lock it in:`;
       submitBtn.textContent = '🎉 Claimed!';
+
+      const widget = document.getElementById('free-pass-widget');
+      widget.innerHTML = '';
+      widget.style.display = 'block';
+      withCalendly(() => Calendly.initInlineWidget({
+        url: freePassUrl,
+        parentElement: widget
+      }));
     })
     .catch(err => {
       msg.className = 'error';
